@@ -19,7 +19,7 @@ import 'boxicons/css/boxicons.min.css';
 const Services = () => {
   return (
     <>
-      <div className="col-12 services">
+      <div className="col-12 services" id="services">
         <div className="container">
           <div className="col-12">
             <div className="row justify-content-center align-items-center">

@@ -6,23 +6,27 @@ import "./contact.css";
 function Contact() {
   return (
     <>
-      <div className="col-12 contact_us">
+      <div className="col-12 contact_us" id="contact">
         <div className="container">
           <div className="col-12">
             <div className="row  justify-content-between align-items-center">
               <div className="col-12 contact-us-head">
                 <h2 className="text-center">Contact Us</h2>
               </div>
-              <div className="col-lg-6 col-md-6 col-sm-6 col-12">
+              <div className="col-lg-6 col-md-6 col-sm-12 col-12 order-lg-1 order-md-1 order-2">
                 <div className="contact_form p-lg-5 p-2">
                   <div className="">
                     <h5 className="text-center our-social">Our Social</h5>
                     <ul className="social-links p-0 m-0">
                       <li className="links-upper my-3">
                         <i class="bx bx-envelope social_media_icon"></i>
-                        <span className="social-address mx-3">
-                          dtable@gmail.com
+                        <a target="blank"
+                            href="mailto:rahulyadav@dtableanalytics.com"
+                          className="alinks">
+                        <span className="social-address email mx-3">
+                        rahulyadav@dtableanalytics.com
                         </span>
+                        </a>
                       </li>
                       <li className="links-upper my-3">
                         <i class="bx bxl-whatsapp  social_media_icon"></i>
@@ -65,7 +69,7 @@ function Contact() {
                 </div>
                 </div>
               </div>
-              <div className="col-lg-6 col-md-6 col-sm-6 col-12 text-center">
+              <div className="col-lg-6 col-md-6 col-sm-12 col-12 order-lg-2 order-md-2 order-1 text-center">
                 <img src={contact} className="img-fluid" />
               </div>
             </div>

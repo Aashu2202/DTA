@@ -30,14 +30,14 @@
     background: linear-gradient(90deg, #5101e4 0%, #368ef2 100%)
 }
 .social-address{
-    font-size: 22px;
+    /* font-size: 22px; */
     color: var(--whitecolor);
     
 }
 .bx-envelope{
     color: rgb(248, 89, 89);
 }
-.bxl-whatsapp{
+.links-upper .bxl-whatsapp{
     color: rgb(77, 250, 54);
 }
 .bxl-linkedin{
@@ -56,6 +56,9 @@
     color: var(--primarycolor);
 }
 .Location{
-    font-size: 22px;
+    /* font-size: 22px; */
     color: var(--primarycolor);
+}
+.email{
+    word-break: break-all;
 }

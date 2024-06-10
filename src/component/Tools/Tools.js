@@ -8,7 +8,7 @@ import './tools.css';
 
 const HoverDevCards = () => {
   return (
-    <div className="container-lg py-4">
+    <div className="container-lg py-4" id="tools">
       <h2 className="text-center tools_head mb-3">Tools and Technologies</h2>
       <div className="row">
         <div className="col-12 col-md-6 col-lg-3 mb-4">

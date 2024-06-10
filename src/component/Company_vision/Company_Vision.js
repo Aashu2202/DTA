@@ -4,7 +4,7 @@ import "./companyVision.css";
 function CompanyVision() {
   return (
     <>
-      <div className="col-12 py-lg-5">
+      <div className="col-12 py-lg-5" id="CompanyVision">
         <div className="container">
           <div className="col-12">
             <div className="row justify-content-center align-items-center">

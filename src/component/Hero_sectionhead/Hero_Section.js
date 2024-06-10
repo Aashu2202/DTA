@@ -9,7 +9,7 @@ function Hero_Section() {
         <div className="container-lg">
           <div className="col-12">
             <div className="row justify-content-center align-items-center">
-              <div className="col-lg-6 col-md-6 col-12">
+              <div className="col-lg-6 col-md-6 col-12 m-lg-0 m-md-0 my-4 ">
                 <div className="Heading">
                 <h1>UNLOCKING THE POWER OF DATA</h1>
                   <h5>

@@ -16,10 +16,11 @@ function Navigation() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link className='nav_menu_links' href="#">Home</Nav.Link>
-            <Nav.Link className='nav_menu_links' href="#">About</Nav.Link>
-            <Nav.Link className='nav_menu_links' href='#'>Services</Nav.Link>
-            <Nav.Link className='nav_menu_links' href='#'>Contact Us</Nav.Link>
+            <Nav.Link className='nav_menu_links' href="">Home</Nav.Link>
+            <Nav.Link className='nav_menu_links' href="#CompanyVision">Our Vision</Nav.Link>
+            <Nav.Link className='nav_menu_links' href='#services'>Services</Nav.Link>
+            <Nav.Link className='nav_menu_links' href='#tools'>Tools</Nav.Link>
+            <Nav.Link className='nav_menu_links' href='#contact'>Contact Us</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </div>
