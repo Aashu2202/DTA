@@ -23,14 +23,14 @@ function Contact() {
                         <a target="blank"
                             href="mailto:rahulyadav@dtableanalytics.com"
                           className="alinks">
-                        <span className="social-address email mx-3">
+                        <span className="social-address email mx-1">
                         rahulyadav@dtableanalytics.com
                         </span>
                         </a>
                       </li>
                       <li className="links-upper my-3">
                         <i class="bx bxl-whatsapp  social_media_icon"></i>
-                        <span className="social-address mx-3">
+                        <span className="social-address mx-1">
                           +91 87702 40025
                         </span>
                       </li>
@@ -41,7 +41,7 @@ function Contact() {
                           target="blank"
                           className="alinks"
                         >
-                          <span className="social-address mx-3">
+                          <span className="social-address mx-1">
                             d-table-analytics
                           </span>
                         </a>
