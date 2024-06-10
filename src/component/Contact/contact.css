@@ -1,0 +1,61 @@
+.contact_us{
+    background-color: rgb(244, 246, 248);
+}
+.contact-us-head{
+    color: var(--primarycolor);
+}
+.contact_form{
+    background-color: rgb(222, 235, 250);
+    border-radius: 16px;
+}
+.our-social{
+    color: var(--primarycolor);
+}
+.social-links li{
+    list-style-type: none;
+}
+
+.social_media_icon{
+    font-size: 33px;
+    padding: 10px;
+    color: var(--primarycolor); 
+    border-radius: 50%;
+    background-color: var(--whitecolor);
+}
+.links-upper{
+    height: 45px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, #5101e4 0%, #368ef2 100%)
+}
+.social-address{
+    font-size: 22px;
+    color: var(--whitecolor);
+    
+}
+.bx-envelope{
+    color: rgb(248, 89, 89);
+}
+.bxl-whatsapp{
+    color: rgb(77, 250, 54);
+}
+.bxl-linkedin{
+    color: #0A66C2;
+}
+.alinks{
+    text-decoration: none;  
+}
+.address_sec{
+    background-color: var(--whitecolor);
+    border-radius: 16px;
+    padding: 15px;
+}
+.location_icon{
+    font-size: 32px;
+    color: var(--primarycolor);
+}
+.Location{
+    font-size: 22px;
+    color: var(--primarycolor);
+}
