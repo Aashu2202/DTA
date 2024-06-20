@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { IoLocation } from "react-icons/io5";
 import { IoIosCall } from "react-icons/io";
-import emailjs from 'emailjs-com';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+import emailjs from "emailjs-com";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import "./contact.css";
-
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    reason: '',
-    message: '',
-    phone: ''
+    name: "",
+    email: "",
+    reason: "",
+    message: "",
+    phone: "",
   });
+  const serviceID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+  const templateID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+  const userID = process.env.REACT_APP_EMAILJS_USER_ID;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,27 +32,29 @@ const Contact = () => {
     // Validate email format
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(formData.email)) {
-      alert('Please enter a valid email address');
+      alert("Please enter a valid email address");
       return;
     }
 
     const templateParams = {
-      to_name: 'Rahul',
+      to_name: "D-table-analytics",
       from_name: formData.name,
       message: formData.message,
       reason: formData.reason,
       user_email: formData.email,
-      phone: formData.phone
+      phone: formData.phone,
     };
 
-    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams, 'YOUR_USER_ID')
-      .then((response) => {
-        console.log('Email sent successfully', response.status, response.text);
-        alert('Email sent successfully');
-      }, (error) => {
-        console.error('Failed to send email', error);
-        alert('Error sending email');
-      });
+    emailjs.send(serviceID, templateID ,templateParams, userID ).then(
+      (response) => {
+        console.log("Email sent successfully", response.status, response.text);
+        alert("Email sent successfully");
+      },
+      (error) => {
+        console.error("Failed to send email", error);
+        alert("Error sending email");
+      }
+    );
   };
 
   return (
@@ -120,7 +124,9 @@ const Contact = () => {
                             <IoIosCall className="location_icon" />
                           </li>
                           <li>
-                            <span className="Location mx-3">+91 87702 40025</span>
+                            <span className="Location mx-3">
+                              +91 87702 40025
+                            </span>
                           </li>
                         </ul>
                       </div>
@@ -133,7 +139,10 @@ const Contact = () => {
                     <div className="card-body p-0">
                       <form role="form" className="row" onSubmit={handleSubmit}>
                         <div className="form-group col-lg-6">
-                          <label className="form-control-label" htmlFor="form-group-input">
+                          <label
+                            className="form-control-label"
+                            htmlFor="form-group-input"
+                          >
                             Name
                           </label>
                           <input
@@ -147,22 +156,28 @@ const Contact = () => {
                           />
                         </div>
                         <div className="form-group col-lg-6">
-                          <label className="form-control-label" htmlFor="form-group-input">
+                          <label
+                            className="form-control-label"
+                            htmlFor="form-group-input"
+                          >
                             Phone Number
                           </label>
                           <PhoneInput
-                            country={'in'}
+                            country={"in"}
                             value={formData.phone}
                             onChange={handlePhoneChange}
                             inputProps={{
-                              name: 'phone',
+                              name: "phone",
                               required: true,
-                              autoFocus: false
+                              autoFocus: false,
                             }}
                           />
                         </div>
                         <div className="form-group col-lg-12">
-                          <label className="form-control-label" htmlFor="form-group-input">
+                          <label
+                            className="form-control-label"
+                            htmlFor="form-group-input"
+                          >
                             Email
                           </label>
                           <input
@@ -176,10 +191,13 @@ const Contact = () => {
                             required
                           />
                         </div>
-                        
+
                         <div className="form-group col-lg-12">
-                          <label className="form-control-label" htmlFor="form-group-input">
-                            Purpose of Request
+                          <label
+                            className="form-control-label"
+                            htmlFor="form-group-input"
+                          >
+                            Reason
                           </label>
                           <select
                             className="form-control"
@@ -188,14 +206,21 @@ const Contact = () => {
                             onChange={handleChange}
                             required
                           >
-                            <option value="" disabled>Select an option</option>
+                            <option value="" disabled>
+                              Select an option
+                            </option>
                             <option value="Sales">Sales</option>
                             <option value="Tech Support">Tech Support</option>
-                            <option value="General Feedback">General Feedback</option>
+                            <option value="General Feedback">
+                              General Feedback
+                            </option>
                           </select>
                         </div>
                         <div className="form-group col-lg-12">
-                          <label className="form-control-label" htmlFor="form-group-input">
+                          <label
+                            className="form-control-label"
+                            htmlFor="form-group-input"
+                          >
                             Message
                           </label>
                           <textarea
