@@ -21,3 +21,8 @@
         justify-content: center;
     }
 }
+@media screen and (max-width: 576px) {
+    .hero_section{
+        min-height: 60vh;
+    }
+}

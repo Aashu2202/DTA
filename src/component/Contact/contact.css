@@ -7,6 +7,7 @@
 .contact_form{
     background-color: rgb(222, 235, 250);
     border-radius: 16px;
+    height: 100%;
 }
 .our-social{
     color: var(--primarycolor);
@@ -60,10 +61,29 @@
     /* font-size: 22px; */
     color: var(--primarycolor);
 }
-/* .email{
-    word-break: break-all;
-} */
+.contact-us-sec{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 
+}
+.send-btn{
+    background: linear-gradient(90deg, #5101e4 0%, #368ef2 100%);
+    color: var(--whitecolor);
+    border: none;
+}
+.send-btn:hover{
+    background: var(--whitecolor);
+    color: var(--primarycolor);
+}
+.form-control-label{
+    color: var(--primarycolor);
+    padding-bottom: 8px;
+}
+.react-tel-input .form-control {
+    border: none;
+    width: 100%;
+}
 @media screen and (max-width: 576px) {
     .email{
         font-size: 75%;
