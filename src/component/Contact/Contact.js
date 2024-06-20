@@ -135,7 +135,7 @@ const Contact = () => {
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-12 col-12 mt-md-0 mt-4 px-2">
                   <div className="contact_form p-lg-5 p-2">
-                    <h5 className="text-center our-social">Our Social</h5>
+                    <h5 className="text-center our-social">Send your query</h5>
                     <div className="card-body p-0">
                       <form role="form" className="row" onSubmit={handleSubmit}>
                         <div className="form-group col-lg-6">
