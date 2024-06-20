@@ -11,7 +11,7 @@ function Hero_Section() {
             <div className="row justify-content-center align-items-center">
               <div className="col-lg-6 col-md-6 col-12 m-lg-0 m-md-0 my-4 ">
                 <div className="Heading">
-                <h1>UNLOCKING THE POWER OF DATA</h1>
+                <h1>DRIVE BUSSINESS WITH POWER TRANSACTIONS</h1>
                   <h5>
                     
                     <ReactTyped

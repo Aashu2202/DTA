@@ -11,6 +11,7 @@ import Services from './component/Sevices/Services.js';
 import Contact from './component/Contact/Contact.js';
 import Footer from './component/Footer/Footer.js';
 
+
 function App() {
   return (
    <>
@@ -21,6 +22,7 @@ function App() {
    <AuroraHero/>
    <Contact/>
    <Footer/>
+   
    </>
   );
 }

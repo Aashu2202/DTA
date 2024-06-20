@@ -3,7 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 // import NavDropdown from 'react-bootstrap/NavDropdown';
 import "./Navbar.css"
-import logo1 from '../../assets/images/companylogos/logotransparent.png'
+import logo1 from '../../assets/images/companylogos/logotransparent1.png'
 import logo2 from '../../assets/images/companylogos/Dlogo.jpeg'
 function Navigation() {
   return (
