@@ -5,7 +5,35 @@ import emailjs from "emailjs-com";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./contact.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Contact = () => {
+  const showToastMessage = (type) => {
+    const position = "top-right";
+    switch (type) {
+      case 'success':
+        toast.success("Mail sent successfully", {
+          position
+        });
+        break;
+      case 'error':
+        toast.error("Error sending mail. Please try again.", {
+          position
+        });
+        break;
+      case 'warning':
+        toast.warning("Please fill valid email address", {
+          position
+        });
+        break;
+      default:
+        toast.info("Please fill all the required fields", {
+          position
+        });
+    }
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,9 +41,13 @@ const Contact = () => {
     message: "",
     phone: "",
   });
+
   const serviceID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
   const templateID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
   const userID = process.env.REACT_APP_EMAILJS_USER_ID;
+
+  const [loader, setLoader] = useState(false);
+  const [btndis, setBtndis] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,11 +60,13 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoader(true);
 
     // Validate email format
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(formData.email)) {
-      alert("Please enter a valid email address");
+      showToastMessage('warning');
+      setLoader(false);
       return;
     }
 
@@ -45,14 +79,18 @@ const Contact = () => {
       phone: formData.phone,
     };
 
-    emailjs.send(serviceID, templateID ,templateParams, userID ).then(
+    emailjs.send(serviceID, templateID, templateParams, userID).then(
       (response) => {
         console.log("Email sent successfully", response.status, response.text);
-        alert("Email sent successfully");
+        
+        showToastMessage('success');
+        setLoader(false);
+        setBtndis(true);
       },
       (error) => {
         console.error("Failed to send email", error);
-        alert("Error sending email");
+        showToastMessage('error');
+        setLoader(false);
       }
     );
   };
@@ -191,7 +229,6 @@ const Contact = () => {
                             required
                           />
                         </div>
-
                         <div className="form-group col-lg-12">
                           <label
                             className="form-control-label"
@@ -234,12 +271,22 @@ const Contact = () => {
                           ></textarea>
                         </div>
                         <div className="form-group col-lg-12">
-                          <button
-                            className="btn send-btn float-end mt-2"
-                            type="submit"
-                          >
-                            Send
-                          </button>
+                          {loader ? (
+                            <button className="btn send-btn float-end mt-2" disabled>
+                              <div className="spinner-border spin" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                              </div>
+                            </button>
+                          ) : (
+                            <button
+                              className="btn send-btn float-end mt-2"
+                              type="submit"
+                              disabled={btndis}
+                            >
+                              Submit
+                            </button>
+                          )}
+                          <ToastContainer />
                         </div>
                       </form>
                     </div>
