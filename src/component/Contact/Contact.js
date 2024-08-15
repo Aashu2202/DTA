@@ -135,7 +135,7 @@ const Contact = () => {
                             target="blank"
                             className="alinks"
                           >
-                            <span className="social-address mx-1">
+                            <span className="social-address linkedin mx-1">
                               d-table-analytics
                             </span>
                           </a>

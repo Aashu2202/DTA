@@ -41,7 +41,7 @@
 .service-section h6 {
     position: relative;
     color: var(--whitecolor);
-    line-height: 30px;
+    line-height: 22px;
     z-index: 2;
   }
 @media (max-width: 768px) and (min-width: 576px) {

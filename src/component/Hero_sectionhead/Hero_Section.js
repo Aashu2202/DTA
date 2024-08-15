@@ -9,7 +9,7 @@ function Hero_Section() {
         <div className="container-lg">
           <div className="col-12">
             <div className="row justify-content-center align-items-center">
-              <div className="col-lg-6 col-md-6 col-12 m-lg-0 m-md-0 my-4 ">
+              <div className="col-lg-7 col-md-7 col-12 m-lg-0 m-md-0 my-4 ">
                 <div className="Heading">
                 <h1>DRIVE BUSSINESS WITH POWER TRANSACTIONS</h1>
                   <h5>
@@ -31,7 +31,7 @@ function Hero_Section() {
                   </h5>
                 </div>
               </div>
-              <div className="col-lg-6 col-md-6 col-12 gif_section">
+              <div className="col-lg-5 col-md-5 col-12 gif_section">
                       <img src={img1} className="img-fluid gif_img"/>
               </div>
             </div>

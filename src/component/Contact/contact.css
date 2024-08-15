@@ -32,7 +32,6 @@
     width: 100%;
 }
 .social-address{
-    /* font-size: 22px; */
     color: var(--whitecolor);
     
 }
@@ -86,7 +85,10 @@
 }
 @media screen and (max-width: 576px) {
     .email{
-        font-size: 75%;
+        font-size: 60%;
+    }
+    .linkedin{
+        font-size: 60%;
     }
     .social_media_icon{
         font-size: 25px;
