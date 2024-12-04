@@ -17,7 +17,7 @@
   --greycolor: #b0bac7;
 }
 
-@font-face{
+/* @font-face{
   font-family: "bold";
   src: url(./assets/font/BrunoAce-Regular.ttf);
   font-weight: 900;
@@ -40,6 +40,32 @@
 @font-face{
   font-family: "light";
   src: url(./assets/font/BrunoAce-Regular.ttf);
+  font-weight: 900;
+} */
+
+@font-face {
+  font-family: "bold";
+  src: url(./assets/font/Hind-Bold.ttf);
+  font-weight: 900;
+}
+@font-face {
+  font-family: "semibold";
+  src: url(./assets/font/Hind-SemiBold.ttf);
+  font-weight: 800;
+}
+@font-face {
+  font-family: "medium";
+  src: url(./assets/font/Hind-Medium.ttf);
+  font-weight: 700;
+}
+@font-face {
+  font-family: "regular";
+  src: url(./assets/font/Hind-Regular.ttf);
+  font-weight: 900;
+}
+@font-face {
+  font-family: "light";
+  src: url(./assets/font/Hind-Light.ttf);
   font-weight: 900;
 }
 
