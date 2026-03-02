@@ -10,20 +10,21 @@ import CompanyVision from './component/Company_vision/Company_Vision.js';
 import Services from './component/Sevices/Services.js';
 import Contact from './component/Contact/Contact.js';
 import Footer from './component/Footer/Footer.js';
+import Chatbot from './component/Chatbot.js';
 
 
 function App() {
   return (
-   <>
-   <Navbar/>
-   <Hero_Section/>
-   <CompanyVision/>
-   <Services/>
-   <AuroraHero/>
-   <Contact/>
-   <Footer/>
-   
-   </>
+    <>
+      <Navbar />
+      <Hero_Section />
+      <CompanyVision />
+      <Services />
+      <AuroraHero />
+      <Contact />
+      <Footer />
+      <Chatbot />
+    </>
   );
 }
 
