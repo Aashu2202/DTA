@@ -69,18 +69,19 @@ async def send_chat_message(
     try:
         user_id = chat_in.user_id or "guest"
         
-        # 1. Save user's message
+        # 1. Save user's message (including purpose if provided)
         user_msg = await chat_repo.chat.create(db, obj_in=chat_in)
-        logger.info(f"User message saved: {user_msg.id}")
+        logger.info(f"User message saved: {user_msg.id} (purpose={chat_in.purpose})")
         
         # 2. Retrieve conversation history for context (last 10 messages)
         conversation_history = await get_conversation_history(db, user_id, limit=10)
         logger.info(f"Loaded {len(conversation_history)} previous messages for context")
         
-        # 3. Process via AI service with conversation memory
+        # 3. Process via AI service with conversation memory and purpose hint
         ai_response_text = await chat_service.process_chat_message(
             message=chat_in.message,
-            conversation_history=conversation_history
+            conversation_history=conversation_history,
+            user_purpose=chat_in.purpose
         )
         logger.info(f"AI response generated successfully")
         
@@ -88,7 +89,8 @@ async def send_chat_message(
         ai_msg_in = ChatMessageCreate(
             user_id=user_id,
             message=ai_response_text,
-            is_user=False
+            is_user=False,
+            purpose=chat_in.purpose
         )
         ai_msg = await chat_repo.chat.create(db, obj_in=ai_msg_in)
         logger.info(f"AI message saved: {ai_msg.id}")

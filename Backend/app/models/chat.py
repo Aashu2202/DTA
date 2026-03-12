@@ -7,6 +7,7 @@ class ChatMessage(BaseModel):
     user_id: str | None = None  # Or a session ID if not logged in
     message: str
     is_user: bool = True  # True if from the user, False if from the AI bot
+    purpose: str | None = None  # business/hiring if provided by user
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:

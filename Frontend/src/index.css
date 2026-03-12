@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;600;700&display=swap');
+
+body {
+  @apply font-sans bg-background-light dark:bg-background-dark text-gray-900 dark:text-gray-100;
+}
+
+/* Custom Scrollbar Styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Dark mode scrollbar */
+.dark .scrollbar-thin::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Chat widget smooth transitions */
+@layer components {
+  .chat-bubble-enter {
+    @apply animate-fade-in-up;
+  }
+
+  .chat-glow {
+    @apply transition-all duration-300 hover:shadow-lg;
+  }
+
+  .gradient-border {
+    @apply relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl opacity-0 transition-opacity duration-300 -z-10;
+  }
+
+  .gradient-border:hover::before {
+    @apply opacity-10;
+  }
+}
+
+/* Smooth animations for fade in */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Focus states for better accessibility */
+button:focus-visible {
+  @apply outline-none ring-2 ring-offset-2 ring-indigo-500;
+}
+
+input:focus-visible,
+textarea:focus-visible {
+  @apply outline-none ring-2 ring-indigo-400;
+}
+
+/* Smooth all transitions */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Prevent text selection on buttons */
+button {
+  @apply select-none;
+}
+
+/* Message animation styles */
+.message-enter {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+/* Gradient text for premium feel */
+.gradient-text {
+  @apply bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent;
+}

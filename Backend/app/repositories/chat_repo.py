@@ -16,6 +16,7 @@ class CRUDChat(CRUDBase[ChatMessage, ChatMessageCreate, ChatMessageInDB]):
             user_id=obj_in.user_id,
             message=obj_in.message,
             is_user=obj_in.is_user,
+            purpose=obj_in.purpose,
         )
         collection = db[self.collection_name]
         result = await collection.insert_one(db_obj.model_dump(by_alias=True, exclude={"id"}))

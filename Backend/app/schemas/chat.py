@@ -6,6 +6,7 @@ class ChatMessageCreate(BaseModel):
     user_id: str | None = None
     message: str
     is_user: bool = True
+    purpose: str | None = None  # optional visitor purpose: "business" or "hiring"
 
 class ChatMessageInDB(ChatMessageCreate):
     id: str = Field(default_factory=lambda: str(ObjectId()), alias="_id")

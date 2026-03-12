@@ -91,7 +91,7 @@ Business Hours:
 
 Office Address:
    1st Floor, Kolar Castle, 101, 
-   Chuna Bhatti Rd, Chuna Bhatti, 
+   Chuna Bhatti Square, 
    Bhopal, Madhya Pradesh 462039
 
 ---

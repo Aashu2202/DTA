@@ -56,7 +56,8 @@ Generic 8-line prompt with fallback response "Please ask related queries"
 - ✓ Always provide useful, specific information
 - ✓ Format lists using bullet points
 - ✓ Provide complete contact details when asked
-- ✓ Relate technical questions to company services
+* ✓ Relate technical questions to company services
+* ✓ Dynamically adjust system prompt based on visitor purpose (business vs hiring) with explicit rules ensuring relevant information is prioritized and questions are never refused
 
 #### **B. Conversation Memory Support**
 **Before:**
