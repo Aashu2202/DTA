@@ -69,7 +69,7 @@ const Contact = () => {
     const formattedPhone = '+' + phoneVal;
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/v1/contacts/`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://3.27.171.224:8000'}/api/v1/contacts/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

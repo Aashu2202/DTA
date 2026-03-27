@@ -23,8 +23,8 @@ const emptyForm = {
   resume: null,
 };
 
-const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-
+// const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_BASE = process.env.REACT_APP_API_URL || 'http://3.27.171.224:8000';
 export default function ApplicationModal({ isOpen, jobTitle, onClose }) {
   const [formData, setFormData] = useState(emptyForm);
   const [submitted, setSubmitted] = useState(false);
@@ -142,10 +142,9 @@ export default function ApplicationModal({ isOpen, jobTitle, onClose }) {
   const inputClass = (field) =>
     `w-full px-4 py-2.5 rounded-lg border text-sm transition-colors outline-none
     dark:bg-gray-800 dark:text-white
-    ${
-      errors[field]
-        ? 'border-red-400 focus:ring-2 focus:ring-red-400'
-        : 'border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-primary focus:border-primary'
+    ${errors[field]
+      ? 'border-red-400 focus:ring-2 focus:ring-red-400'
+      : 'border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-primary focus:border-primary'
     }`;
 
   /* ─── Render ─────────────────────────────────────────────── */
@@ -483,18 +482,16 @@ export default function ApplicationModal({ isOpen, jobTitle, onClose }) {
                         className={`flex flex-col items-center justify-center gap-2 cursor-pointer
                           rounded-xl border-2 border-dashed p-8 text-center
                           transition-colors duration-200
-                          ${
-                            errors.resume
-                              ? 'border-red-400 bg-red-50 dark:bg-red-900/10'
-                              : formData.resume
+                          ${errors.resume
+                            ? 'border-red-400 bg-red-50 dark:bg-red-900/10'
+                            : formData.resume
                               ? 'border-green-400 bg-green-50 dark:bg-green-900/10'
                               : 'border-gray-300 dark:border-gray-600 hover:border-primary hover:bg-primary/5'
                           }`}
                       >
                         <HiOutlineUpload
-                          className={`w-8 h-8 ${
-                            formData.resume ? 'text-green-500' : 'text-gray-400'
-                          }`}
+                          className={`w-8 h-8 ${formData.resume ? 'text-green-500' : 'text-gray-400'
+                            }`}
                         />
                         {formData.resume ? (
                           <p className="text-sm font-semibold text-green-600 dark:text-green-400">
