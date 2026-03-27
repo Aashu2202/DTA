@@ -57,7 +57,7 @@ const FAQForm = () => {
     setSaving(true);
     setError(null);
 
-    const url = isEditing ? `${API_BASE_URL}/api/v1/faqs/${id}` : '/api/v1/faqs';
+    const url = isEditing ? `${API_BASE_URL}/api/v1/faqs/${id}` : `${API_BASE_URL}/api/v1/faqs`;
     const method = isEditing ? 'PUT' : 'POST';
 
     try {

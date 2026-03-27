@@ -17,7 +17,7 @@ const JobForm = () => {
     status: 'Active',
     apply_link_or_email: ''
   });
-  
+
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -26,7 +26,7 @@ const JobForm = () => {
     if (isEditing) {
       const fetchJob = async () => {
         try {
-          const response = await fetch(`/api/v1/jobs/${id}`);
+          const response = await fetch(`${API_BASE_URL}/api/v1/jobs/${id}`);
           if (!response.ok) throw new Error('Failed to fetch job details');
           const data = await response.json();
           setFormData({
@@ -58,7 +58,7 @@ const JobForm = () => {
       requirements: formData.requirements.split('\n').map(r => r.trim()).filter(r => r)
     };
 
-    const url = isEditing ? `/api/v1/jobs/${id}` : '/api/v1/jobs';
+    const url = isEditing ? `${API_BASE_URL}/api/v1/jobs/${id}` : `${API_BASE_URL}/api/v1/jobs`;
     const method = isEditing ? 'PUT' : 'POST';
 
     try {
@@ -70,7 +70,7 @@ const JobForm = () => {
         },
         body: JSON.stringify(payload)
       });
-      
+
       if (!response.ok) throw new Error('Failed to save job');
       navigate('/admin/jobs');
     } catch (err) {

@@ -9,7 +9,7 @@ const ServicesManager = () => {
   const fetchServices = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/v1/services/admin/all', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/services/admin/all`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -30,9 +30,9 @@ const ServicesManager = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this service?')) return;
-    
+
     try {
-      const response = await fetch(`/api/v1/services/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/services/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`

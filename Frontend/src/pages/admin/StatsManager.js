@@ -26,7 +26,7 @@ const StatsManager = () => {
   const fetchStats = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/v1/stats/admin', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/stats/admin`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -74,7 +74,7 @@ const StatsManager = () => {
     const newItems = [...items];
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
     [newItems[index], newItems[targetIndex]] = [newItems[targetIndex], newItems[index]];
-    
+
     // Update order values
     const finalItems = newItems.map((item, idx) => ({ ...item, order: idx + 1 }));
     setItems(finalItems);
@@ -86,7 +86,7 @@ const StatsManager = () => {
     setMessage(null);
 
     try {
-      const response = await fetch('/api/v1/stats/admin', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/stats/admin`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -211,13 +211,12 @@ const StatsManager = () => {
                     />
                     <span className="text-sm font-medium text-gray-700">Highlight Card</span>
                   </label>
-                  
+
                   <select
                     value={item.status}
                     onChange={(e) => handleItemChange(index, 'status', e.target.value)}
-                    className={`text-sm font-semibold rounded-full px-3 py-1 border-none outline-none cursor-pointer ${
-                      item.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
-                    }`}
+                    className={`text-sm font-semibold rounded-full px-3 py-1 border-none outline-none cursor-pointer ${item.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                      }`}
                   >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>

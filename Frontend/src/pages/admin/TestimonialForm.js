@@ -15,7 +15,7 @@ const TestimonialForm = () => {
     order: 0,
     status: 'Active'
   });
-  
+
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -24,7 +24,7 @@ const TestimonialForm = () => {
     if (isEditing) {
       const fetchTestimonial = async () => {
         try {
-          const response = await fetch(`/api/v1/testimonials/${id}`, {
+          const response = await fetch(`${API_BASE_URL}/api/v1/testimonials/${id}`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
             }
@@ -63,7 +63,7 @@ const TestimonialForm = () => {
     setSaving(true);
     setError(null);
 
-    const url = isEditing ? `/api/v1/testimonials/${id}` : '/api/v1/testimonials';
+    const url = isEditing ? `${API_BASE_URL}/api/v1/testimonials/${id}` : `${API_BASE_URL}/api/v1/testimonials`;
     const method = isEditing ? 'PUT' : 'POST';
 
     try {
@@ -75,7 +75,7 @@ const TestimonialForm = () => {
         },
         body: JSON.stringify(formData)
       });
-      
+
       const resData = await response.json();
       if (!response.ok) {
         throw new Error(resData.detail || 'Failed to save testimonial');

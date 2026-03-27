@@ -9,7 +9,7 @@ const JobsManager = () => {
   const fetchJobs = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/v1/jobs/admin', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/jobs/admin`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -30,9 +30,9 @@ const JobsManager = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this job?')) return;
-    
+
     try {
-      const response = await fetch(`/api/v1/jobs/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/jobs/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`

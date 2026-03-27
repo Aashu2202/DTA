@@ -9,7 +9,7 @@ const TestimonialsManager = () => {
   const fetchTestimonials = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/v1/testimonials/admin/all', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/testimonials/admin/all`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -30,9 +30,9 @@ const TestimonialsManager = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this testimonial?')) return;
-    
+
     try {
-      const response = await fetch(`/api/v1/testimonials/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/testimonials/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
@@ -48,7 +48,7 @@ const TestimonialsManager = () => {
   const toggleStatus = async (testimonial) => {
     const newStatus = testimonial.status === 'Active' ? 'Inactive' : 'Active';
     try {
-      const response = await fetch(`/api/v1/testimonials/${testimonial.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/testimonials/${testimonial.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -108,13 +108,12 @@ const TestimonialsManager = () => {
                       {testimonial.role}, {testimonial.company}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <button 
+                      <button
                         onClick={() => toggleStatus(testimonial)}
-                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer transition-all ${
-                          testimonial.status === 'Active' 
-                            ? 'bg-green-100 text-green-700 hover:bg-green-200' 
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                        }`}
+                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer transition-all ${testimonial.status === 'Active'
+                          ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
                       >
                         {testimonial.status}
                       </button>
@@ -130,7 +129,7 @@ const TestimonialsManager = () => {
           </table>
         </div>
       </div>
-      
+
       <p className="mt-4 text-gray-500 text-xs italic">
         * Testimonials are displayed on the public site sorted by 'Order' (ascending). Only 'Active' ones are visible.
       </p>

@@ -14,23 +14,23 @@ const ICON_MAP = {
 
 const PROBLEM_ICON_OPTIONS = [
   { value: 'FiAlertCircle', label: '⚠️ Alert Circle' },
-  { value: 'FiClock',        label: '🕐 Clock (Delays)' },
+  { value: 'FiClock', label: '🕐 Clock (Delays)' },
   { value: 'FiTrendingDown', label: '📉 Trend Down (Decline)' },
-  { value: 'FiDatabase',     label: '🗄️ Database (Data Issues)' },
-  { value: 'FiUserX',        label: '👤 User X (Access / HR)' },
-  { value: 'FiShieldOff',    label: '🛡️ Shield Off (Security)' },
-  { value: 'FiXCircle',      label: '❌ X Circle (Failure)' },
-  { value: 'FiZap',          label: '⚡ Zap (Speed / Energy)' },
-  { value: 'FiActivity',     label: '📊 Activity (Monitoring)' },
-  { value: 'FiSliders',      label: '🎚️ Sliders (Control)' },
-  { value: 'FiSearch',       label: '🔍 Search (Visibility)' },
-  { value: 'FiDollarSign',   label: '💵 Dollar Sign (Cost)' },
-  { value: 'FiMessageCircle',label: '💬 Message (Communication)' },
-  { value: 'FiRefreshCw',    label: '🔄 Refresh (Repetition)' },
-  { value: 'FiLock',         label: '🔒 Lock (Access Control)' },
-  { value: 'FiGlobe',        label: '🌐 Globe (Reach)' },
-  { value: 'FiLayers',       label: '📚 Layers (Complexity)' },
-  { value: 'FiCheckCircle',  label: '✅ Check Circle (Compliance)' },
+  { value: 'FiDatabase', label: '🗄️ Database (Data Issues)' },
+  { value: 'FiUserX', label: '👤 User X (Access / HR)' },
+  { value: 'FiShieldOff', label: '🛡️ Shield Off (Security)' },
+  { value: 'FiXCircle', label: '❌ X Circle (Failure)' },
+  { value: 'FiZap', label: '⚡ Zap (Speed / Energy)' },
+  { value: 'FiActivity', label: '📊 Activity (Monitoring)' },
+  { value: 'FiSliders', label: '🎚️ Sliders (Control)' },
+  { value: 'FiSearch', label: '🔍 Search (Visibility)' },
+  { value: 'FiDollarSign', label: '💵 Dollar Sign (Cost)' },
+  { value: 'FiMessageCircle', label: '💬 Message (Communication)' },
+  { value: 'FiRefreshCw', label: '🔄 Refresh (Repetition)' },
+  { value: 'FiLock', label: '🔒 Lock (Access Control)' },
+  { value: 'FiGlobe', label: '🌐 Globe (Reach)' },
+  { value: 'FiLayers', label: '📚 Layers (Complexity)' },
+  { value: 'FiCheckCircle', label: '✅ Check Circle (Compliance)' },
 ];
 
 const ServiceForm = () => {
@@ -56,7 +56,7 @@ const ServiceForm = () => {
     },
     status: 'Active'
   });
-  
+
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -65,10 +65,10 @@ const ServiceForm = () => {
     if (isEditing) {
       const fetchService = async () => {
         try {
-          const response = await fetch(`/api/v1/services/admin/all`, {
-             headers: {
-                 'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
-             }
+          const response = await fetch(`${API_BASE_URL}/api/v1/services/admin/all`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+            }
           });
           if (!response.ok) throw new Error('Failed to fetch services list');
           const data = await response.json();
@@ -87,7 +87,7 @@ const ServiceForm = () => {
               }
             });
           } else {
-             throw new Error('Service not found');
+            throw new Error('Service not found');
           }
         } catch (err) {
           setError(err.message);
@@ -163,7 +163,7 @@ const ServiceForm = () => {
     payload.benefits = payload.benefits.filter(item => item.trim() !== '');
     payload.detailContent.whatIsIt = payload.detailContent.whatIsIt.filter(item => item.trim() !== '');
 
-    const url = isEditing ? `/api/v1/services/${id}` : '/api/v1/services';
+    const url = isEditing ? `${API_BASE_URL}/api/v1/services/${id}` : `${API_BASE_URL}/api/v1/services`;
     const method = isEditing ? 'PUT' : 'POST';
 
     try {
@@ -175,7 +175,7 @@ const ServiceForm = () => {
         },
         body: JSON.stringify(payload)
       });
-      
+
       const resData = await response.json();
       if (!response.ok) {
         throw new Error(resData.detail || 'Failed to save service');
@@ -199,7 +199,7 @@ const ServiceForm = () => {
       {error && <div className="mb-4 text-sm text-red-600 bg-red-50 p-3 rounded">{error}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        
+
         {/* Core Info */}
         <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
           <h3 className="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Core Information</h3>
@@ -348,14 +348,14 @@ const ServiceForm = () => {
                 <input type="number" value={item.step} onChange={(e) => handleDetailChange('processDiagram', index, 'step', Number(e.target.value))} className="w-full px-2 py-1 border rounded" />
               </div>
               <div className="flex-1 space-y-3 pt-1">
-                 <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-1">Title</label>
-                    <input type="text" value={item.title} onChange={(e) => handleDetailChange('processDiagram', index, 'title', e.target.value)} className="w-full px-2 py-1 border rounded" placeholder="e.g. Discovery & Audit" />
-                 </div>
-                 <div>
-                    <label className="block text-xs font-semibold text-gray-600 mb-1">Description</label>
-                    <input type="text" value={item.description} onChange={(e) => handleDetailChange('processDiagram', index, 'description', e.target.value)} className="w-full px-2 py-1 border rounded" placeholder="Explain this step..." />
-                 </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">Title</label>
+                  <input type="text" value={item.title} onChange={(e) => handleDetailChange('processDiagram', index, 'title', e.target.value)} className="w-full px-2 py-1 border rounded" placeholder="e.g. Discovery & Audit" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">Description</label>
+                  <input type="text" value={item.description} onChange={(e) => handleDetailChange('processDiagram', index, 'description', e.target.value)} className="w-full px-2 py-1 border rounded" placeholder="Explain this step..." />
+                </div>
               </div>
               <button type="button" onClick={() => removeDetailItem('processDiagram', index)} className="mt-6 px-3 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200">X</button>
             </div>
