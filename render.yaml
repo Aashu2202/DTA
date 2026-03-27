@@ -1,0 +1,33 @@
+services:
+  # Backend Service
+  - type: web
+    name: dta-backend
+    env: python
+    rootDir: Backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MONGO_DETAILS
+        sync: false
+      - key: DATABASE_NAME
+        value: dtable_analytics
+      - key: SECRET_KEY
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 1440
+
+  # Frontend Service
+  - type: web
+    name: dta-frontend
+    env: static
+    rootDir: Frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    # Add env variables if needed by React
+    envVars:
+      - key: NODE_VERSION
+        value: 20
