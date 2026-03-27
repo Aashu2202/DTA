@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiOutlineX, HiOutlineCheckCircle, HiOutlineUpload, HiOutlineRefresh } from 'react-icons/hi';
+import { API_BASE_URL } from '../../config';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
 const VALID_FILE_TYPES = [
@@ -23,9 +24,8 @@ const emptyForm = {
   resume: null,
 };
 
-// const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-const API_BASE = process.env.REACT_APP_API_URL || 'http://3.27.171.224:8000';
 export default function ApplicationModal({ isOpen, jobTitle, onClose }) {
+  const API_BASE = API_BASE_URL;
   const [formData, setFormData] = useState(emptyForm);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});

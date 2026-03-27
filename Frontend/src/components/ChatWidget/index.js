@@ -7,8 +7,9 @@ import MessageBubble from './MessageBubble';
 import ChatInput from './ChatInput';
 import TypingIndicator from './TypingIndicator';
 import QuickSuggestions from './QuickSuggestions';
+import { API_BASE_URL } from '../../config';
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api/v1';
+const API_BASE = `${API_BASE_URL}/api/v1`;
 
 const containerVariants = {
   initial: { opacity: 0, y: 20, scale: 0.92 },
@@ -93,7 +94,7 @@ export default function ChatWidget() {
       const payload = { user_id: 'guest', message: text, is_user: false };
       if (purpose) payload.purpose = purpose;
 
-      const res = await fetch(`${API_BASE_URL}/chat/`, {
+      const res = await fetch(`${API_BASE}/chat/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
