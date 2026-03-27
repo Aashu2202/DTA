@@ -14,6 +14,7 @@ import {
   HiChevronRight
 } from 'react-icons/hi';
 import ApplicationModal from '../components/Career/ApplicationModal';
+import { API_BASE_URL } from '../config';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -74,13 +75,13 @@ export default function Careers() {
         const response = await fetch('/api/v1/jobs');
         if (!response.ok) throw new Error('Failed to fetch positions');
         const data = await response.json();
-        
+
         // Map backend data to frontend model
         const mappedJobs = data.map(job => {
           // Calculate relative time or format date
           const date = new Date(job.created_at);
           const formattedDate = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
-          
+
           return {
             id: job.id,
             title: job.title,
@@ -93,7 +94,7 @@ export default function Careers() {
             applyLinkOrEmail: job.apply_link_or_email
           };
         });
-        
+
         setPositions(mappedJobs);
       } catch (err) {
         setErrorJobs(err.message);
@@ -259,65 +260,65 @@ export default function Careers() {
                 {positions
                   .slice((currentPage - 1) * JOBS_PER_PAGE, currentPage * JOBS_PER_PAGE)
                   .map((job, idx) => (
-                  <motion.div
-                    key={job.id || idx}
-                    className="group bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6"
-                    variants={itemVariants}
-                  >
-                    {/* Left Section: Title & Description */}
-                    <div className="flex-1 lg:w-[45%] lg:flex-none lg:pr-8">
-                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
-                        {job.title}
-                      </h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base line-clamp-2 lg:line-clamp-none">
-                        {job.description}
-                      </p>
-                    </div>
+                    <motion.div
+                      key={job.id || idx}
+                      className="group bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6"
+                      variants={itemVariants}
+                    >
+                      {/* Left Section: Title & Description */}
+                      <div className="flex-1 lg:w-[45%] lg:flex-none lg:pr-8">
+                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
+                          {job.title}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base line-clamp-2 lg:line-clamp-none">
+                          {job.description}
+                        </p>
+                      </div>
 
-                    {/* Middle Section: Metadata & Tags */}
-                    <div className="flex-1 w-full lg:w-auto flex flex-col gap-3">
-                      <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-5 text-sm text-gray-600 dark:text-gray-300">
-                        <div className="flex items-center gap-2">
-                          <HiOutlineLocationMarker className="text-primary flex-shrink-0" size={18} />
-                          <span className="truncate">{job.location}</span>
+                      {/* Middle Section: Metadata & Tags */}
+                      <div className="flex-1 w-full lg:w-auto flex flex-col gap-3">
+                        <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-5 text-sm text-gray-600 dark:text-gray-300">
+                          <div className="flex items-center gap-2">
+                            <HiOutlineLocationMarker className="text-primary flex-shrink-0" size={18} />
+                            <span className="truncate">{job.location}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <HiOutlineBriefcase className="text-primary flex-shrink-0" size={18} />
+                            <span className="truncate">{job.experience}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <HiOutlineClock className="text-primary flex-shrink-0" size={18} />
+                            <span className="truncate">{job.employmentType}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <HiOutlineCalendar className="text-primary flex-shrink-0" size={18} />
+                            <span className="truncate">{job.postedDate}</span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <HiOutlineBriefcase className="text-primary flex-shrink-0" size={18} />
-                          <span className="truncate">{job.experience}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <HiOutlineClock className="text-primary flex-shrink-0" size={18} />
-                          <span className="truncate">{job.employmentType}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <HiOutlineCalendar className="text-primary flex-shrink-0" size={18} />
-                          <span className="truncate">{job.postedDate}</span>
+
+                        <div className="flex flex-wrap gap-2">
+                          {job.tags.map((tag, i) => (
+                            <span
+                              key={i}
+                              className="px-2.5 py-1 bg-primary/10 text-primary dark:bg-primary/20 text-xs font-medium rounded-md"
+                            >
+                              {tag}
+                            </span>
+                          ))}
                         </div>
                       </div>
 
-                      <div className="flex flex-wrap gap-2">
-                        {job.tags.map((tag, i) => (
-                          <span
-                            key={i}
-                            className="px-2.5 py-1 bg-primary/10 text-primary dark:bg-primary/20 text-xs font-medium rounded-md"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                      {/* Right Section: Action Button */}
+                      <div className="w-full lg:w-auto flex justify-end shrink-0">
+                        <button
+                          onClick={() => setSelectedJob(job.title)}
+                          className="w-full lg:w-auto py-2.5 px-8 bg-primary text-white font-semibold rounded-lg hover:bg-indigo-600 shadow-sm hover:shadow transition-all flex items-center justify-center whitespace-nowrap">
+                          Apply Now
+                          <HiOutlineArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                        </button>
                       </div>
-                    </div>
-
-                    {/* Right Section: Action Button */}
-                    <div className="w-full lg:w-auto flex justify-end shrink-0">
-                      <button
-                        onClick={() => setSelectedJob(job.title)}
-                        className="w-full lg:w-auto py-2.5 px-8 bg-primary text-white font-semibold rounded-lg hover:bg-indigo-600 shadow-sm hover:shadow transition-all flex items-center justify-center whitespace-nowrap">
-                        Apply Now
-                        <HiOutlineArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  ))}
 
                 {/* Pagination Controls */}
                 {positions.length > JOBS_PER_PAGE && (
@@ -329,11 +330,10 @@ export default function Careers() {
                         positionsRef.current?.scrollIntoView({ behavior: 'smooth' });
                       }}
                       disabled={currentPage === 1}
-                      className={`p-2 rounded-lg border border-gray-200 dark:border-gray-700 transition-all ${
-                        currentPage === 1
+                      className={`p-2 rounded-lg border border-gray-200 dark:border-gray-700 transition-all ${currentPage === 1
                           ? 'opacity-50 cursor-not-allowed'
                           : 'hover:bg-primary/5 hover:border-primary/30 text-gray-600 dark:text-gray-400'
-                      }`}
+                        }`}
                       aria-label="Previous page"
                     >
                       <HiChevronLeft size={20} />
@@ -346,11 +346,10 @@ export default function Careers() {
                           setCurrentPage(i + 1);
                           positionsRef.current?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className={`w-10 h-10 rounded-lg font-semibold transition-all ${
-                          currentPage === i + 1
+                        className={`w-10 h-10 rounded-lg font-semibold transition-all ${currentPage === i + 1
                             ? 'bg-primary text-white shadow-md'
                             : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:border-primary/30 hover:bg-primary/5'
-                        }`}
+                          }`}
                       >
                         {i + 1}
                       </button>
@@ -364,11 +363,10 @@ export default function Careers() {
                         positionsRef.current?.scrollIntoView({ behavior: 'smooth' });
                       }}
                       disabled={currentPage === Math.ceil(positions.length / JOBS_PER_PAGE)}
-                      className={`p-2 rounded-lg border border-gray-200 dark:border-gray-700 transition-all ${
-                        currentPage === Math.ceil(positions.length / JOBS_PER_PAGE)
+                      className={`p-2 rounded-lg border border-gray-200 dark:border-gray-700 transition-all ${currentPage === Math.ceil(positions.length / JOBS_PER_PAGE)
                           ? 'opacity-50 cursor-not-allowed'
                           : 'hover:bg-primary/5 hover:border-primary/30 text-gray-600 dark:text-gray-400'
-                      }`}
+                        }`}
                       aria-label="Next page"
                     >
                       <HiChevronRight size={20} />
