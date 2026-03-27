@@ -104,7 +104,7 @@ export default function ApplicationModal({ isOpen, jobTitle, onClose }) {
         payload.append('resume', formData.resume);
       }
 
-      const response = await fetch(`${API_BASE}/api/v1/careers/apply`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/careers/apply`, {
         method: 'POST',
         body: payload,
       });
