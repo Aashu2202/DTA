@@ -1,5 +1,5 @@
 services:
-  # Backend Service
+  # Backend Web Service
   - type: web
     name: dta-backend
     env: python
@@ -20,14 +20,13 @@ services:
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: 1440
 
-  # Frontend Service
-  - type: web
+  # Frontend Static Site
+  - type: static_site
     name: dta-frontend
-    env: static
+    env: node
     rootDir: Frontend
     buildCommand: npm install && npm run build
     staticPublishPath: build
-    # Add env variables if needed by React
     envVars:
       - key: NODE_VERSION
         value: 20
