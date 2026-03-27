@@ -5,7 +5,6 @@ from datetime import datetime
 class UserBase(BaseModel):
     email: EmailStr
     full_name: str
-    role: str = "User" # Admin, SuperAdmin, User
 
 class UserCreate(UserBase):
     password: str
@@ -13,11 +12,13 @@ class UserCreate(UserBase):
 class UserInDB(UserBase):
     id: str = Field(alias="_id")
     hashed_password: str
+    role: str = "User"
     is_active: bool = True
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class UserResponse(UserBase):
     id: str = Field(alias="_id")
+    role: str
     is_active: bool
     created_at: datetime
 

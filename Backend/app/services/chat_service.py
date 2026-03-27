@@ -163,12 +163,13 @@ Contact Information Example:
 "Here's how you can reach us."
 
 Email
-• General inquiries: hello@dtable-analytics.com
-• Careers: careers@dtable-analytics.com
-• Support: support@dtable-analytics.com
+• General inquiries: madhavijoshi@dtableanalytics.com
+• Careers: hr@dtableanalytics.com
+• Business Support: rahulyadav@dtableanalytics.com
 
 Phone
-• +1 (XXX) XXX-XXXX
+• HR Contact: +91 8269660025
+• Business Contact: +91 87702 40025
 
 Hours
 • Monday–Friday: 9 AM – 6 PM EST
@@ -288,6 +289,6 @@ async def process_chat_message(
         return (
             "I'm experiencing technical difficulties at the moment. "
             "Please try again in a few moments, or contact our support team at "
-            "contact@dtable-analytics.com for immediate assistance."
+            "rahulyadav@dtableanalytics.com for immediate assistance."
         )
 

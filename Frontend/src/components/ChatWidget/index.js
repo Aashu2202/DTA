@@ -23,6 +23,7 @@ const buttonVariants = {
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showLabel, setShowLabel] = useState(false);
   const [messages, setMessages] = useState([]);
   const [userPurpose, setUserPurpose] = useState(null); // "business" or "hiring"
   const [inputValue, setInputValue] = useState('');
@@ -38,6 +39,32 @@ export default function ChatWidget() {
   useEffect(() => {
     if (isOpen) scrollToBottom();
   }, [messages, isOpen]);
+
+  useEffect(() => {
+    let showTimeoutId;
+    let hideTimeoutId;
+
+    const runLoop = () => {
+      setShowLabel(true);
+      showTimeoutId = setTimeout(() => {
+        setShowLabel(false);
+        const hideDuration = 5000 + Math.random() * 2000;
+        hideTimeoutId = setTimeout(runLoop, hideDuration);
+      }, 5000);
+    };
+
+    if (!isOpen) {
+      // Start loop when chat is closed or on mount
+      hideTimeoutId = setTimeout(runLoop, 1000);
+    } else {
+      setShowLabel(false);
+    }
+
+    return () => {
+      clearTimeout(showTimeoutId);
+      clearTimeout(hideTimeoutId);
+    };
+  }, [isOpen]);
 
   // when opening chat or resetting purposes, initialize conversation
   useEffect(() => {
@@ -108,11 +135,11 @@ export default function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 font-sans">
+    <div className="fixed bottom-4 right-2 sm:bottom-6 sm:right-6 z-50 font-sans">
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="w-96 h-screen sm:h-[600px] bg-white dark:bg-gray-900 rounded-3xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl border border-white/20 dark:border-gray-700/30"
+            className="w-[calc(100vw-1rem)] max-w-[384px] h-[70vh] sm:h-[600px] bg-white dark:bg-gray-900 rounded-3xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl border border-white/20 dark:border-gray-700/30"
             initial={containerVariants.initial}
             animate={containerVariants.animate}
             exit={containerVariants.exit}
@@ -172,19 +199,46 @@ export default function ChatWidget() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {!isOpen && (
-          <motion.button
-            className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-full shadow-xl flex items-center justify-center hover:shadow-2xl focus:outline-none transition-all hover:from-indigo-600 hover:to-purple-700"
+        {showLabel && !isOpen && (
+          <motion.div
+            className="hidden sm:flex absolute right-[4.5rem] sm:right-[5.25rem] bottom-[10px] sm:bottom-[13px] items-center justify-center bg-white/95 backdrop-blur-md dark:bg-gray-800/95 text-indigo-700 dark:text-purple-300 px-5 py-2.5 rounded-full shadow-lg shadow-indigo-500/10 dark:shadow-purple-900/20 cursor-pointer border border-indigo-100/50 dark:border-purple-700/30 hover:shadow-xl transition-all"
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 5, transition: { duration: 0.2 } }}
+            whileHover={{ scale: 1.02, y: -2 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
             onClick={() => setIsOpen(true)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.92 }}
+          >
+            <span className="text-sm font-medium tracking-wide whitespace-nowrap">Ask D-Table AI</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.div
+            className="relative"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
-            <FiMessageSquare className="w-7 h-7" />
-          </motion.button>
+            {/* Subtle Pulse Effect */}
+            <motion.div
+              className="absolute inset-0 rounded-full bg-indigo-500/40 dark:bg-purple-500/40 pointer-events-none"
+              animate={{ scale: [1, 1.35], opacity: [0.6, 0] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeOut' }}
+            />
+            {/* Main Button */}
+            <motion.button
+              className="relative w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-full shadow-xl flex items-center justify-center hover:shadow-2xl focus:outline-none transition-colors hover:from-indigo-600 hover:to-purple-700 z-10"
+              onClick={() => setIsOpen(true)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FiMessageSquare className="w-7 h-7" />
+            </motion.button>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

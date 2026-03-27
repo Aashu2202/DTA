@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
@@ -16,6 +17,15 @@ class Settings(BaseSettings):
     
     # OpenAI Settings
     OPENAI_API_KEY: str
+
+    # Email / SMTP Settings (optional — if not set, emails are logged instead of sent)
+    HR_EMAIL: Optional[str] = "hr@dtableanalytics.com"
+    FOUNDER_EMAIL: Optional[str] = "rahulyadav@dtableanalytics.com"
+    SMTP_HOST: Optional[str] = None
+    SMTP_PORT: int = 587
+    SMTP_USER: Optional[str] = None
+    SMTP_PASSWORD: Optional[str] = None
+    SMTP_FROM: Optional[str] = None
 
     # Model Config to read from .env file
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")

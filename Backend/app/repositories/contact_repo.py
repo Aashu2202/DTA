@@ -10,18 +10,18 @@ class ContactModel(BaseModel):
     name: str
     email: str
     phone: str | None = None
-    subject: str
+    reason: str
     message: str
     is_read: bool = False
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class CRUDContact(CRUDBase[ContactModel, ContactCreate, ContactInDB]):
     async def create(self, db: AsyncIOMotorClient, *, obj_in: ContactCreate) -> ContactInDB:
-        db_obj = ContactInDB(
+        db_obj = ContactModel(
             name=obj_in.name,
             email=obj_in.email,
             phone=obj_in.phone,
-            subject=obj_in.subject,
+            reason=obj_in.reason,
             message=obj_in.message,
         )
         collection = db[self.collection_name]

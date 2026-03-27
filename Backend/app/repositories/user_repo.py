@@ -20,7 +20,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserInDB]):
             email=obj_in.email,
             hashed_password=hashed_password,
             full_name=obj_in.full_name,
-            role=obj_in.role
+            role="User"
         )
         collection = db[self.collection_name]
         result = await collection.insert_one(db_obj.model_dump(by_alias=True, exclude={"id"}))

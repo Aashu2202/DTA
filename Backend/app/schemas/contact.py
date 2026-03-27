@@ -5,8 +5,9 @@ from datetime import datetime
 class ContactBase(BaseModel):
     name: str
     email: EmailStr
+    company_name: Optional[str] = None
     phone: Optional[str] = None
-    subject: str
+    reason: str
     message: str
 
 class ContactCreate(ContactBase):
@@ -21,3 +22,5 @@ class ContactResponse(ContactBase):
     id: str = Field(alias="_id")
     is_read: bool
     created_at: datetime
+
+    model_config = {"populate_by_name": True}

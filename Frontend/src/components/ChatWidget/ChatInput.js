@@ -37,7 +37,6 @@ export default function ChatInput({ value, onChange, onSubmit, disabled }) {
             className="w-full px-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-0 dark:focus:ring-offset-0 resize-none transition-all shadow-sm hover:shadow-md focus:shadow-md disabled:opacity-60 disabled:cursor-not-allowed max-h-24 overflow-hidden"
             rows="1"
           />
-          {value && <div className="absolute top-3 right-3 text-xs text-gray-400">{value.length}</div>}
         </div>
 
         {/* Send button */}
