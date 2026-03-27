@@ -72,7 +72,7 @@ export default function Careers() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch('/api/v1/jobs');
+        const response = await fetch(`${API_BASE_URL}/api/v1/jobs`);
         if (!response.ok) throw new Error('Failed to fetch positions');
         const data = await response.json();
 
@@ -331,8 +331,8 @@ export default function Careers() {
                       }}
                       disabled={currentPage === 1}
                       className={`p-2 rounded-lg border border-gray-200 dark:border-gray-700 transition-all ${currentPage === 1
-                          ? 'opacity-50 cursor-not-allowed'
-                          : 'hover:bg-primary/5 hover:border-primary/30 text-gray-600 dark:text-gray-400'
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'hover:bg-primary/5 hover:border-primary/30 text-gray-600 dark:text-gray-400'
                         }`}
                       aria-label="Previous page"
                     >
@@ -347,8 +347,8 @@ export default function Careers() {
                           positionsRef.current?.scrollIntoView({ behavior: 'smooth' });
                         }}
                         className={`w-10 h-10 rounded-lg font-semibold transition-all ${currentPage === i + 1
-                            ? 'bg-primary text-white shadow-md'
-                            : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:border-primary/30 hover:bg-primary/5'
+                          ? 'bg-primary text-white shadow-md'
+                          : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:border-primary/30 hover:bg-primary/5'
                           }`}
                       >
                         {i + 1}
@@ -364,8 +364,8 @@ export default function Careers() {
                       }}
                       disabled={currentPage === Math.ceil(positions.length / JOBS_PER_PAGE)}
                       className={`p-2 rounded-lg border border-gray-200 dark:border-gray-700 transition-all ${currentPage === Math.ceil(positions.length / JOBS_PER_PAGE)
-                          ? 'opacity-50 cursor-not-allowed'
-                          : 'hover:bg-primary/5 hover:border-primary/30 text-gray-600 dark:text-gray-400'
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'hover:bg-primary/5 hover:border-primary/30 text-gray-600 dark:text-gray-400'
                         }`}
                       aria-label="Next page"
                     >

@@ -1,13 +1,12 @@
 import { FiX } from 'react-icons/fi';
 import { SiOpenai } from 'react-icons/si';
 import { motion } from 'framer-motion';
-
 export default function ChatHeader({ onClose }) {
   return (
     <div className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 text-white px-6 py-5 shadow-lg relative overflow-hidden">
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-400/20 to-purple-600/20 animate-pulse" />
-      
+
       <div className="relative flex items-center justify-between">
         {/* Left: Icon and Title */}
         <div className="flex items-center gap-3">

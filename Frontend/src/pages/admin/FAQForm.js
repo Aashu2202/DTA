@@ -12,7 +12,7 @@ const FAQForm = () => {
     order: 0,
     status: 'Active'
   });
-  
+
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -21,7 +21,7 @@ const FAQForm = () => {
     if (isEditing) {
       const fetchFAQ = async () => {
         try {
-          const response = await fetch(`/api/v1/faqs/${id}`, {
+          const response = await fetch(`${API_BASE_URL}/api/v1/faqs/${id}`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
             }
@@ -57,7 +57,7 @@ const FAQForm = () => {
     setSaving(true);
     setError(null);
 
-    const url = isEditing ? `/api/v1/faqs/${id}` : '/api/v1/faqs';
+    const url = isEditing ? `${API_BASE_URL}/api/v1/faqs/${id}` : '/api/v1/faqs';
     const method = isEditing ? 'PUT' : 'POST';
 
     try {
@@ -69,7 +69,7 @@ const FAQForm = () => {
         },
         body: JSON.stringify(formData)
       });
-      
+
       const resData = await response.json();
       if (!response.ok) {
         throw new Error(resData.detail || 'Failed to save FAQ');

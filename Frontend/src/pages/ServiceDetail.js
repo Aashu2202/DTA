@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Navigate, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { servicesData } from '../data/servicesData';
+import { API_BASE_URL } from '../config';
 import {
     FiCheckCircle,
     FiArrowRight,
@@ -51,7 +52,7 @@ export default function ServiceDetail() {
     useEffect(() => {
         const fetchServiceDetail = async () => {
             try {
-                const response = await fetch(`/api/v1/services/${id}`);
+                const response = await fetch(`${API_BASE_URL}/api/v1/services/${id}`);
                 if (response.ok) {
                     const dbService = await response.json();
                     setService(dbService);

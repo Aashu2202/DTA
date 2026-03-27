@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { servicesData } from '../data/servicesData';
 import ServiceBlock from '../components/Services/ServiceBlock';
 import { FiMessageSquare } from 'react-icons/fi';
-
+import { API_BASE_URL } from '../config';
 const ServicesPage = () => {
   const [isRestoring, setIsRestoring] = useState(() => !!sessionStorage.getItem('scrollTargetServiceId'));
   const [services, setServices] = useState(servicesData); // Default fallback to static
@@ -28,7 +28,7 @@ const ServicesPage = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch('/api/v1/services');
+        const response = await fetch(`${API_BASE_URL}/api/v1/services`);
         if (response.ok) {
           const list = await response.json();
           const mapped = list.map(dbItem => {

@@ -9,7 +9,7 @@ const FAQsManager = () => {
   const fetchFaqs = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/v1/faqs/admin/all', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/faqs/admin/all`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -30,9 +30,9 @@ const FAQsManager = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this FAQ?')) return;
-    
+
     try {
-      const response = await fetch(`/api/v1/faqs/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/faqs/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
@@ -48,7 +48,7 @@ const FAQsManager = () => {
   const toggleStatus = async (faq) => {
     const newStatus = faq.status === 'Active' ? 'Inactive' : 'Active';
     try {
-      const response = await fetch(`/api/v1/faqs/${faq.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/faqs/${faq.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -104,13 +104,12 @@ const FAQsManager = () => {
                       {faq.question}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <button 
+                      <button
                         onClick={() => toggleStatus(faq)}
-                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer transition-all ${
-                          faq.status === 'Active' 
-                            ? 'bg-green-100 text-green-700 hover:bg-green-200' 
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                        }`}
+                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer transition-all ${faq.status === 'Active'
+                          ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
                       >
                         {faq.status}
                       </button>
@@ -126,7 +125,7 @@ const FAQsManager = () => {
           </table>
         </div>
       </div>
-      
+
       <p className="mt-4 text-gray-500 text-xs italic">
         * FAQs are displayed on the public site sorted by 'Order' (ascending). Only 'Active' FAQs are visible.
       </p>

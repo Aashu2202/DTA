@@ -3,7 +3,7 @@
   Animations slide elements into view on scroll.
 */
 import { motion } from 'framer-motion';
-
+import { API_BASE_URL } from '../../config';
 export default function AISection() {
   return (
     <section id="ai" className="py-20">
