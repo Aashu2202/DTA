@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BiMessageDetail } from 'react-icons/bi';
-import { FiMessageSquare, FiX } from 'react-icons/fi';
+import { FiMessageSquare } from 'react-icons/fi';
 import ChatHeader from './ChatHeader';
 import MessageBubble from './MessageBubble';
 import ChatInput from './ChatInput';
@@ -15,11 +14,6 @@ const containerVariants = {
   initial: { opacity: 0, y: 20, scale: 0.92 },
   animate: { opacity: 1, y: 0, scale: 1 },
   exit: { opacity: 0, y: 20, scale: 0.92 },
-};
-
-const buttonVariants = {
-  scale: [1, 1.1, 1],
-  transition: { duration: 0.4 },
 };
 
 export default function ChatWidget() {
@@ -80,7 +74,7 @@ export default function ChatWidget() {
       ]);
       setShowSuggestions(true);
     }
-  }, [isOpen]);
+  }, [isOpen, messages.length]);
 
   const sendMessage = async (text, purpose = null) => {
     if (!text.trim()) return;

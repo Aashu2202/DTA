@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { API_BASE_URL } from '../../config';
 
 const JobForm = () => {
   const { id } = useParams();

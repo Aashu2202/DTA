@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FiX, FiStar } from 'react-icons/fi';
-import { API_BASE_URL } from '../../config';
 const AnnouncementBar = () => {
   const [isVisible, setIsVisible] = useState(true);
 
