@@ -7,14 +7,14 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.0
       - key: MONGO_DETAILS
-        sync: false
       - key: DATABASE_NAME
         value: dtable_analytics
       - key: SECRET_KEY
         generateValue: true
       - key: OPENAI_API_KEY
-        sync: false
       - key: ALGORITHM
         value: HS256
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
