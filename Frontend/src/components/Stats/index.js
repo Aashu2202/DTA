@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { FaUsers, FaFileAlt, FaCheckCircle, FaClock, FaTrophy, FaBolt, FaShieldAlt, FaGlobe } from 'react-icons/fa';
+import { API_BASE_URL } from '../../config';
 
 const ICON_MAP = {
   users: <FaUsers />,
@@ -55,7 +56,7 @@ export default function Stats() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch('/api/v1/stats');
+        const response = await fetch(`${API_BASE_URL}/api/v1/stats`);
         if (!response.ok) throw new Error('Failed to fetch stats');
         const data = await response.json();
         setItems(data.items || []);
@@ -105,20 +106,19 @@ export default function Stats() {
           {items.map((item, index) => (
             <motion.div
               key={index}
-              className={`group relative p-8 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-800 border-t-2 ${
-                item.highlight 
-                  ? 'bg-gradient-to-br from-blue-50/50 to-white dark:from-blue-900/10 dark:to-gray-800/40 border-t-blue-500' 
+              className={`group relative p-8 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-blue-200 dark:hover:border-blue-800 border-t-2 ${item.highlight
+                  ? 'bg-gradient-to-br from-blue-50/50 to-white dark:from-blue-900/10 dark:to-gray-800/40 border-t-blue-500'
                   : 'bg-white/50 dark:bg-gray-800/40 backdrop-blur-sm border-t-gray-100 dark:border-t-gray-700'
-              }`}
+                }`}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               whileHover={{ y: -3 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ 
+              transition={{
                 type: "spring",
                 stiffness: 100,
                 damping: 20,
-                delay: index * 0.1 
+                delay: index * 0.1
               }}
             >
               {/* Icon Decoration */}

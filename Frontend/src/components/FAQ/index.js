@@ -5,6 +5,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiChevronDown } from 'react-icons/hi';
+import { API_BASE_URL } from '../../config';
 
 export default function FAQ() {
   const [faqs, setFaqs] = useState([]);
@@ -15,7 +16,7 @@ export default function FAQ() {
   useEffect(() => {
     const fetchFaqs = async () => {
       try {
-        const response = await fetch('/api/v1/faqs');
+        const response = await fetch(`${API_BASE_URL}/api/v1/faqs`);
         if (!response.ok) throw new Error('Failed to fetch FAQs');
         const data = await response.json();
         setFaqs(data);
@@ -86,8 +87,8 @@ export default function FAQ() {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
                 className={`bg-white dark:bg-gray-800 rounded-3xl border ${openIndex === idx
-                    ? 'border-indigo-200 dark:border-indigo-500/30 shadow-xl shadow-indigo-500/5'
-                    : 'border-gray-100 dark:border-gray-700 shadow-soft hover:shadow-md'
+                  ? 'border-indigo-200 dark:border-indigo-500/30 shadow-xl shadow-indigo-500/5'
+                  : 'border-gray-100 dark:border-gray-700 shadow-soft hover:shadow-md'
                   } transition-all duration-300 overflow-hidden`}
               >
                 <button
