@@ -2,9 +2,62 @@
   Footer with multi-column layout, quick links, and social icons.
   Dark background with hover effects to match premium aesthetic.
 */
+import { useLocation } from 'react-router-dom';
 import { FaTwitter, FaLinkedin, FaInstagram, FaGithub, FaCheckCircle } from 'react-icons/fa';
 
 export default function Footer() {
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  // Function to get dynamic contact details based on the current route
+  const getFooterContactDetails = (path) => {
+    // Services Pages (including details)
+    if (path.startsWith('/services')) {
+      return {
+        sections: [
+          { label: 'Call Us', value: '+91 87702 40025' },
+          { label: 'Email Us', value: 'info@dtableanalytics.com', isEmail: true },
+          { label: 'For more queries', value: 'bd@dtableanalytics.com', isEmail: true }
+        ]
+      };
+    }
+
+    // Career Page (handling both /career and /careers)
+    if (path.startsWith('/career')) {
+      return {
+        sections: [
+          { label: 'Email', value: 'hr@dtableanalytics.com', isEmail: true },
+          { label: 'HR Contact', value: '+91 8269660025' }
+        ]
+      };
+    }
+
+    // Home Page (Default)
+    return {
+      sections: [
+        {
+          label: 'Email',
+          group: [
+            { label: 'General inquiries', value: 'madhavijoshi@dtableanalytics.com' },
+            { label: 'Careers', value: 'hr@dtableanalytics.com' },
+            { label: 'Business Support', value: 'rahulyadav@dtableanalytics.com' }
+          ],
+          isEmail: true
+        },
+        {
+          label: 'Phone',
+          group: [
+            { label: 'HR Contact', value: '+91 8269660025' },
+            { label: 'Business Contact', value: '+91 87702 40025' }
+          ]
+        },
+        { label: 'Website', value: 'https://www.dtable-analytics.com', isExternal: true }
+      ]
+    };
+  };
+
+  const contactData = getFooterContactDetails(pathname);
+
   return (
     <footer className="bg-gray-900 text-gray-400 relative">
       {/* Subtle top border gradient */}
@@ -63,15 +116,40 @@ export default function Footer() {
         </div>
         <div>
           <h5 className="text-white font-semibold mb-6 tracking-wide">Contact</h5>
-          <div className="space-y-3 text-sm text-gray-400 mt-2">
-            <p className="flex items-center space-x-2">
-              <span className="text-gray-500 min-w-[3rem]">Email:</span>
-              <a href="mailto:hr@dtableanalytics.com" className="hover:text-white transition-colors">hr@dtableanalytics.com</a>
-            </p>
-            <p className="flex items-center space-x-2">
-              <span className="text-gray-500 min-w-[3rem]">Phone:</span>
-              <span className="text-gray-300">+91 87702 40025</span>
-            </p>
+          <div className="space-y-4 text-sm text-gray-400 mt-2">
+            {contactData.sections.map((section, idx) => (
+              <div key={idx}>
+                <span className="text-gray-500 block text-xs uppercase tracking-wider font-semibold mb-1 opacity-80">
+                  {section.label}:
+                </span>
+                {section.group ? (
+                  <div className="space-y-2 ml-0">
+                    {section.group.map((item, i) => (
+                      <p key={i} className="flex flex-col">
+                        <span className="text-gray-400/60 text-[11px] leading-tight mb-0.5">{item.label}</span>
+                        {section.isEmail ? (
+                          <a href={`mailto:${item.value}`} className="text-gray-300 hover:text-white transition-colors">{item.value}</a>
+                        ) : (
+                          <span className="text-gray-300">{item.value}</span>
+                        )}
+                      </p>
+                    ))}
+                  </div>
+                ) : (
+                  <p>
+                    {section.isEmail ? (
+                      <a href={`mailto:${section.value}`} className="text-gray-300 hover:text-white transition-colors">{section.value}</a>
+                    ) : section.isExternal ? (
+                      <a href={section.value} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors break-all">
+                        {section.value}
+                      </a>
+                    ) : (
+                      <span className="text-gray-300">{section.value}</span>
+                    )}
+                  </p>
+                )}
+              </div>
+            ))}
           </div>
           <div className="flex flex-wrap gap-4 mt-8">
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Twitter page" className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800/80 text-gray-400 transition-all duration-300 hover:bg-blue-600 hover:text-white hover:-translate-y-1 shadow-sm hover:shadow-blue-500/20 group">
