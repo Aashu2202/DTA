@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import aboutImage from '../../assets/images/about_us.png';
 
 const AboutUs = () => {
@@ -107,15 +108,15 @@ const AboutUs = () => {
             </div>
 
             <motion.div className="mt-10" whileHover={{ x: 5 }}>
-              <a
-                href="/services"
+              <Link
+                to="/services"
                 className="inline-flex items-center text-primary font-bold hover:underline"
               >
                 View our solutions
                 <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
 
