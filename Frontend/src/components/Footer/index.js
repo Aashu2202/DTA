@@ -38,9 +38,9 @@ export default function Footer() {
         {
           label: 'Email',
           group: [
+            { label: 'Business Support', value: 'rahulyadav@dtableanalytics.com' },
             { label: 'General inquiries', value: 'madhavijoshi@dtableanalytics.com' },
-            { label: 'Careers', value: 'hr@dtableanalytics.com' },
-            { label: 'Business Support', value: 'rahulyadav@dtableanalytics.com' }
+            { label: 'Careers', value: 'hr@dtableanalytics.com' }
           ],
           isEmail: true
         },
