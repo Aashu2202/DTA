@@ -13,60 +13,88 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup SSH
+      - name: Setup SSH key
         run: |
+          set -e
           mkdir -p ~/.ssh
           printf "%s" "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ~/.ssh/dta_key
           chmod 600 ~/.ssh/dta_key
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Validate SSH key
+        run: |
+          set -e
+          ssh-keygen -y -f ~/.ssh/dta_key > /dev/null
+          echo "SSH key is valid"
 
       - name: Test SSH connection
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/dta_key ubuntu@${{ secrets.EC2_HOST }} "echo SSH connected"
+          set -e
+          ssh \
+            -vvv \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            -o ConnectTimeout=20 \
+            -i ~/.ssh/dta_key \
+            ubuntu@${{ secrets.EC2_HOST }} "echo SSH connected successfully"
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/dta_key ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-            set -e
+          ssh \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            -o ConnectTimeout=20 \
+            -i ~/.ssh/dta_key \
+            ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+              set -e
 
-            APP_DIR="/home/ubuntu/DTA"
+              APP_DIR="/home/ubuntu/DTA"
 
-            echo "Moving to project directory..."
-            cd "$APP_DIR"
+              echo "Moving to project directory..."
+              cd "$APP_DIR"
 
-            echo "Pulling latest code..."
-            git fetch origin
-            git reset --hard origin/main
+              echo "Pulling latest code..."
+              git fetch origin
+              git reset --hard origin/main
 
-            echo "Updating backend..."
-            cd Backend
+              echo "Updating backend..."
+              cd Backend
 
-            if [ ! -d "venv" ]; then
-              python3 -m venv venv
-            fi
+              if [ ! -d "venv" ]; then
+                python3 -m venv venv
+              fi
 
-            source venv/bin/activate
-            pip install --upgrade pip
-            pip install -r requirements.txt
-            pip install gunicorn uvicorn
+              source venv/bin/activate
+              pip install --upgrade pip
+              pip install -r requirements.txt
+              pip install gunicorn uvicorn
 
-            echo "Restarting backend service..."
-            sudo systemctl restart dta-backend
+              echo "Restarting backend service..."
+              sudo systemctl restart dta-backend
+              sudo systemctl status dta-backend --no-pager || true
 
-            echo "Building frontend..."
-            cd ../Frontend
-            npm install
-            npm run build
+              echo "Building frontend..."
+              cd ../Frontend
+              npm install
+              npm run build
 
-            echo "Deploying frontend build..."
-            sudo rm -rf /var/www/html/*
-            sudo cp -r build/. /var/www/html/
+              echo "Deploying frontend build..."
+              sudo rm -rf /var/www/html/*
 
-            echo "Checking nginx config..."
-            sudo nginx -t
+              if [ -d "build" ]; then
+                sudo cp -r build/. /var/www/html/
+              elif [ -d "dist" ]; then
+                sudo cp -r dist/. /var/www/html/
+              else
+                echo "No build or dist folder found"
+                exit 1
+              fi
 
-            echo "Restarting nginx..."
-            sudo systemctl restart nginx
+              echo "Checking nginx config..."
+              sudo nginx -t
 
-            echo "Deployment completed successfully."
+              echo "Restarting nginx..."
+              sudo systemctl restart nginx
+              sudo systemctl status nginx --no-pager || true
+
+              echo "Deployment completed successfully."
           EOF
