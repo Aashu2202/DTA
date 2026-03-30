@@ -47,12 +47,22 @@ module.exports = {
           '50%': {
             opacity: '0.8'
           }
+        },
+        'marquee': {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' }
+        },
+        'marquee-reverse': {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' }
         }
       },
       animation: {
         'fade-in-up': 'fade-in-up 0.5s ease-out',
         'bounce-gentle': 'bounce-gentle 2s infinite',
-        'pulse-slow': 'pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+        'pulse-slow': 'pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'marquee': 'marquee 40s linear infinite',
+        'marquee-reverse': 'marquee-reverse 40s linear infinite'
       },
       transitionDuration: {
         '2000': '2000ms',

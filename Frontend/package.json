@@ -2,7 +2,7 @@
   "name": "dta",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://dtableanalytics.com",
+  "proxy": "http://localhost:8000",
   "dependencies": {
     "@react-three/drei": "^9.106.0",
     "@react-three/fiber": "^8.16.8",
