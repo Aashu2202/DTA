@@ -13,16 +13,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup SSH key
+      - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/dta_key
+          printf "%s" "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ~/.ssh/dta_key
           chmod 600 ~/.ssh/dta_key
-          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Test SSH connection
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/dta_key ubuntu@${{ secrets.EC2_HOST }} "echo SSH connected"
 
       - name: Deploy to EC2
         run: |
-          ssh -i ~/.ssh/dta_key ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/dta_key ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             set -e
 
             APP_DIR="/home/ubuntu/DTA"
@@ -48,7 +52,6 @@ jobs:
 
             echo "Restarting backend service..."
             sudo systemctl restart dta-backend
-            sudo systemctl status dta-backend --no-pager
 
             echo "Building frontend..."
             cd ../Frontend
@@ -64,7 +67,6 @@ jobs:
 
             echo "Restarting nginx..."
             sudo systemctl restart nginx
-            sudo systemctl status nginx --no-pager
 
             echo "Deployment completed successfully."
           EOF
