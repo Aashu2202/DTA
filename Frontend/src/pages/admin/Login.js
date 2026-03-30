@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { API_BASE_URL } from '../../config';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await fetch('/api/v1/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -45,7 +46,7 @@ const Login = () => {
     <div className="flex justify-center items-center h-screen bg-gray-50">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md border border-gray-100">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
-        
+
         {error && (
           <div className="mb-4 text-sm text-red-600 bg-red-50 p-3 rounded">
             {error}
