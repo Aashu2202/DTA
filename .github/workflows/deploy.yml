@@ -1,0 +1,70 @@
+name: Deploy DTA Project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/dta_key
+          chmod 600 ~/.ssh/dta_key
+          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        run: |
+          ssh -i ~/.ssh/dta_key ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+
+            APP_DIR="/home/ubuntu/DTA"
+
+            echo "Moving to project directory..."
+            cd "$APP_DIR"
+
+            echo "Pulling latest code..."
+            git fetch origin
+            git reset --hard origin/main
+
+            echo "Updating backend..."
+            cd Backend
+
+            if [ ! -d "venv" ]; then
+              python3 -m venv venv
+            fi
+
+            source venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            pip install gunicorn uvicorn
+
+            echo "Restarting backend service..."
+            sudo systemctl restart dta-backend
+            sudo systemctl status dta-backend --no-pager
+
+            echo "Building frontend..."
+            cd ../Frontend
+            npm install
+            npm run build
+
+            echo "Deploying frontend build..."
+            sudo rm -rf /var/www/html/*
+            sudo cp -r build/. /var/www/html/
+
+            echo "Checking nginx config..."
+            sudo nginx -t
+
+            echo "Restarting nginx..."
+            sudo systemctl restart nginx
+            sudo systemctl status nginx --no-pager
+
+            echo "Deployment completed successfully."
+          EOF
