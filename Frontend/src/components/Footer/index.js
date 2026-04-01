@@ -15,7 +15,19 @@ export default function Footer() {
     if (path.startsWith('/services')) {
       return {
         sections: [
-          { label: 'Call Us', value: '+91 87702 40025' },
+          {
+            label: 'Phone',
+            group: [
+              {
+                isRow: true,
+                items: [
+                  { label: 'Business Contact', value: '+91 87702 40025' },
+                  { label: 'BDM No', value: '+91 82697 50025' }
+                ]
+              },
+              { label: 'HR Contact', value: '+91 8269660025' }
+            ]
+          },
           { label: 'Email Us', value: 'info@dtableanalytics.com', isEmail: true },
           { label: 'For more queries', value: 'bd@dtableanalytics.com', isEmail: true }
         ]
@@ -47,11 +59,17 @@ export default function Footer() {
         {
           label: 'Phone',
           group: [
-            { label: 'HR Contact', value: '+91 8269660025' },
-            { label: 'Business Contact', value: '+91 87702 40025' }
+            {
+              isRow: true,
+              items: [
+                { label: 'Business Contact', value: '+91 87702 40025' },
+                { label: 'BDM No', value: '+91 82697 50025' }
+              ]
+            },
+            { label: 'HR Contact', value: '+91 8269660025' }
           ]
         },
-        { label: 'Website', value: 'https://www.dtable-analytics.com', isExternal: true }
+        { label: 'Website', value: 'https://www.dtableanalytics.com', isExternal: true }
       ]
     };
   };
@@ -123,16 +141,27 @@ export default function Footer() {
                   {section.label}:
                 </span>
                 {section.group ? (
-                  <div className="space-y-2 ml-0">
+                  <div className="space-y-4 ml-0">
                     {section.group.map((item, i) => (
-                      <p key={i} className="flex flex-col">
-                        <span className="text-gray-400/60 text-[11px] leading-tight mb-0.5">{item.label}</span>
-                        {section.isEmail ? (
-                          <a href={`mailto:${item.value}`} className="text-gray-300 hover:text-white transition-colors">{item.value}</a>
-                        ) : (
-                          <span className="text-gray-300">{item.value}</span>
-                        )}
-                      </p>
+                      item.isRow ? (
+                        <div key={i} className="flex flex-wrap gap-x-8 gap-y-4">
+                          {item.items.map((subItem, j) => (
+                            <p key={j} className="flex flex-col">
+                              <span className="text-gray-400/60 text-[11px] leading-tight mb-0.5">{subItem.label}</span>
+                              <span className="text-gray-300">{subItem.value}</span>
+                            </p>
+                          ))}
+                        </div>
+                      ) : (
+                        <p key={i} className="flex flex-col">
+                          <span className="text-gray-400/60 text-[11px] leading-tight mb-0.5">{item.label}</span>
+                          {section.isEmail ? (
+                            <a href={`mailto:${item.value}`} className="text-gray-300 hover:text-white transition-colors">{item.value}</a>
+                          ) : (
+                            <span className="text-gray-300">{item.value}</span>
+                          )}
+                        </p>
+                      )
                     ))}
                   </div>
                 ) : (
