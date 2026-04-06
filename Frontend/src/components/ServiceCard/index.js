@@ -26,11 +26,11 @@ export default function ServiceCard({ service }) {
           />
         </div>
         <div className="p-5">
-          <div className="flex items-center mb-3">
-            <div className="p-2.5 bg-indigo-50 dark:bg-gray-700 rounded-xl text-primary mr-3 shadow-sm group-hover:bg-primary group-hover:text-white transition-colors duration-200">
+          <div className="flex items-start gap-2 mb-3">
+            <div className="p-2 bg-indigo-50 dark:bg-gray-700 rounded-xl text-primary shadow-sm group-hover:bg-primary group-hover:text-white transition-colors duration-200">
               {IconComponent && <IconComponent className="w-5 h-5" />}
             </div>
-            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1 group-hover:text-primary transition-colors duration-200">
+            <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-2 leading-tight group-hover:text-primary transition-colors duration-200 mt-0.5">
               {service.title}
             </h3>
           </div>

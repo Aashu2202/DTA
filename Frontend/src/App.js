@@ -18,6 +18,7 @@ import Contact from './components/Contact';
 import Careers from './pages/Careers';
 import ServiceDetail from './pages/ServiceDetail';
 import ServicesPage from './pages/ServicesPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 // admin pages
 import AdminLayout from './components/AdminLayout';
@@ -79,6 +80,7 @@ function App() {
             <Route path="/careers" element={<Careers />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/:id" element={<ServiceDetail />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </Route>
 
           {/* Admin Routes */}

@@ -38,15 +38,14 @@ async def send_email(
     - attachment_path is optional; if provided the file will be attached to the email.
     - Email sending is non-blocking: any SMTP error is logged but not re-raised.
     """
+    logger.info(f"[DIAGNOSTIC] Entering send_email function for recipient: {to_email}")
     config = _get_smtp_config()
 
     if not config:
         logger.warning(
-            "SMTP not configured. Logging email instead of sending.\n"
+            "[DIAGNOSTIC] SMTP not configured. Logging instead of sending.\n"
             f"  TO:      {to_email}\n"
-            f"  SUBJECT: {subject}\n"
-            f"  BODY:    {html_body}\n"
-            f"  ATTACH:  {attachment_path}"
+            f"  SUBJECT: {subject}"
         )
         return False
 
@@ -68,16 +67,20 @@ async def send_email(
             part.add_header("Content-Disposition", f'attachment; filename="{filename}"')
             msg.attach(part)
 
+        logger.info(f"[DIAGNOSTIC] Connecting to SMTP host: {config['host']}:{config['port']}")
         with smtplib.SMTP(config["host"], config["port"]) as server:
             server.ehlo()
             server.starttls()
+            logger.info(f"[DIAGNOSTIC] Attempting SMTP Login for user: {config['user']}")
             server.login(config["user"], config["password"])
+            logger.info(f"[DIAGNOSTIC] SMTP Login SUCCESS. Sending mail to: {to_email}")
             server.sendmail(config["from"], to_email, msg.as_string())
+            logger.info(f"[DIAGNOSTIC] smtplib.sendmail completed for recipient: {to_email}")
 
         logger.info(f"Email sent successfully to {to_email} — Subject: {subject}")
         return True
 
     except Exception as exc:
         # Non-blocking: log the error but do not raise so the caller can proceed
-        logger.error(f"Failed to send email to {to_email}: {exc}")
+        logger.error(f"[DIAGNOSTIC] EXCEPTION in send_email for {to_email}: {exc}")
         return False

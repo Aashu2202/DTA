@@ -5,7 +5,8 @@ from datetime import datetime
 class ContactBase(BaseModel):
     name: str
     email: EmailStr
-    company_name: Optional[str] = None
+    company_name: str
+    location: str
     phone: Optional[str] = None
     reason: str
     message: str

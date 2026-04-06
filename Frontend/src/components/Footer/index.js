@@ -2,8 +2,8 @@
   Footer with multi-column layout, quick links, and social icons.
   Dark background with hover effects to match premium aesthetic.
 */
-import { useLocation } from 'react-router-dom';
-import { FaTwitter, FaLinkedin, FaInstagram, FaGithub, FaCheckCircle } from 'react-icons/fa';
+import { useLocation, Link } from 'react-router-dom';
+import { FaLinkedin, FaInstagram, FaCheckCircle } from 'react-icons/fa';
 
 export default function Footer() {
   const location = useLocation();
@@ -119,16 +119,16 @@ export default function Footer() {
           <h5 className="text-white font-semibold mb-6 tracking-wide">Quick Links</h5>
           <ul className="space-y-4 text-sm mt-2">
             <li>
-              <a href="#why" className="inline-block transform transition-transform duration-300 hover:translate-x-1.5 text-gray-400 hover:text-white">Why Us</a>
+              <Link to="/#why-us" className="inline-block transform transition-transform duration-300 hover:translate-x-1.5 text-gray-400 hover:text-white">Why Us</Link>
             </li>
             <li>
-              <a href="#faq" className="inline-block transform transition-transform duration-300 hover:translate-x-1.5 text-gray-400 hover:text-white">FAQ</a>
+              <Link to="/#faq" className="inline-block transform transition-transform duration-300 hover:translate-x-1.5 text-gray-400 hover:text-white">FAQ</Link>
             </li>
             <li>
-              <a href="#contact" className="inline-block transform transition-transform duration-300 hover:translate-x-1.5 text-gray-400 hover:text-white">Contact</a>
+              <Link to="/#contact" className="inline-block transform transition-transform duration-300 hover:translate-x-1.5 text-gray-400 hover:text-white">Contact</Link>
             </li>
             <li>
-              <a href="#" className="inline-block transform transition-transform duration-300 hover:translate-x-1.5 text-gray-400 hover:text-white">Privacy Policy</a>
+              <Link to="/privacy-policy" className="inline-block transform transition-transform duration-300 hover:translate-x-1.5 text-gray-400 hover:text-white">Privacy Policy</Link>
             </li>
           </ul>
         </div>
@@ -180,18 +180,24 @@ export default function Footer() {
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap gap-4 mt-8">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Twitter page" className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800/80 text-gray-400 transition-all duration-300 hover:bg-blue-600 hover:text-white hover:-translate-y-1 shadow-sm hover:shadow-blue-500/20 group">
-              <FaTwitter className="text-lg group-hover:scale-110 transition-transform duration-300" />
+          <div className="flex flex-wrap gap-6 mt-8">
+            <a 
+              href="https://www.linkedin.com/in/d-table-analytics-b523001a0/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              aria-label="Visit our LinkedIn page" 
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800/80 text-gray-400 transition-all duration-500 hover:bg-[#0077b5] hover:text-white hover:-translate-y-1.5 hover:shadow-lg hover:shadow-[#0077b5]/30 group"
+            >
+              <FaLinkedin className="text-xl group-hover:scale-110 transition-transform duration-500" />
             </a>
-            <a href="https://www.linkedin.com/in/d-table-analytics-b523001a0/" target="_blank" rel="noopener noreferrer" aria-label="Visit our LinkedIn page" className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800/80 text-gray-400 transition-all duration-300 hover:bg-blue-600 hover:text-white hover:-translate-y-1 shadow-sm hover:shadow-blue-500/20 group">
-              <FaLinkedin className="text-lg group-hover:scale-110 transition-transform duration-300" />
-            </a>
-            <a href="https://www.instagram.com/dtanalytics/" target="_blank" rel="noopener noreferrer" aria-label="Visit our Instagram page" className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800/80 text-gray-400 transition-all duration-300 hover:bg-blue-600 hover:text-white hover:-translate-y-1 shadow-sm hover:shadow-blue-500/20 group">
-              <FaInstagram className="text-lg group-hover:scale-110 transition-transform duration-300" />
-            </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our GitHub page" className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800/80 text-gray-400 transition-all duration-300 hover:bg-blue-600 hover:text-white hover:-translate-y-1 shadow-sm hover:shadow-blue-500/20 group">
-              <FaGithub className="text-lg group-hover:scale-110 transition-transform duration-300" />
+            <a 
+              href="https://www.instagram.com/dtanalytics/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              aria-label="Visit our Instagram page" 
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800/80 text-gray-400 transition-all duration-500 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white hover:-translate-y-1.5 hover:shadow-lg hover:shadow-pink-500/30 group"
+            >
+              <FaInstagram className="text-xl group-hover:scale-110 transition-transform duration-500" />
             </a>
           </div>
         </div>

@@ -9,6 +9,8 @@ class ContactModel(BaseModel):
     id: str = Field(alias="_id", default_factory=lambda: str(ObjectId()))
     name: str
     email: str
+    company_name: str
+    location: str
     phone: str | None = None
     reason: str
     message: str
@@ -20,6 +22,8 @@ class CRUDContact(CRUDBase[ContactModel, ContactCreate, ContactInDB]):
         db_obj = ContactModel(
             name=obj_in.name,
             email=obj_in.email,
+            company_name=obj_in.company_name,
+            location=obj_in.location,
             phone=obj_in.phone,
             reason=obj_in.reason,
             message=obj_in.message,

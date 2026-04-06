@@ -16,6 +16,7 @@ const Contact = () => {
     name: '',
     email: '',
     companyName: '',
+    location: '',
     reason: '',
     message: '',
     phone: '91',
@@ -79,6 +80,7 @@ const Contact = () => {
           name: formData.name,
           email: formData.email,
           company_name: formData.companyName,
+          location: formData.location,
           phone: formattedPhone,
           reason: formData.reason,
           message: formData.message,
@@ -91,6 +93,7 @@ const Contact = () => {
           name: '',
           email: '',
           companyName: '',
+          location: '',
           reason: '',
           message: '',
           phone: '91',
@@ -235,9 +238,10 @@ const Contact = () => {
                     <input
                       type="text"
                       name="companyName"
-                      placeholder="Optional"
+                      placeholder="e.g. ABC Pvt. Ltd."
                       value={formData.companyName}
                       onChange={handleChange}
+                      required
                       className="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                     />
                   </div>
@@ -249,23 +253,38 @@ const Contact = () => {
                         value={formData.phone}
                         onChange={handlePhoneChange}
                         containerClass="w-full"
-                        inputClass="!w-full !px-5 !py-6 !rounded-xl !border !border-gray-200 dark:!border-gray-600 !bg-gray-50 dark:!bg-gray-700 !text-gray-900 dark:!text-white focus:!outline-none focus:!ring-2 focus:!ring-indigo-500/20 focus:!border-indigo-500 !transition-all"
+                        inputClass="!w-full !px-5 !py-3 !pl-14 !rounded-xl !border !border-gray-200 dark:!border-gray-600 !bg-gray-50 dark:!bg-gray-700 !text-gray-900 dark:!text-white focus:!outline-none focus:!ring-2 focus:!ring-indigo-500/20 focus:!border-indigo-500 !transition-all"
                         buttonClass="!border-none !bg-transparent !rounded-l-xl"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">Inquiry Reason</label>
-                  <input
-                    type="text"
-                    name="reason"
-                    placeholder="e.g. Data Analytics Consulting"
-                    value={formData.reason}
-                    onChange={handleChange}
-                    className="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">Location</label>
+                    <input
+                      type="text"
+                      name="location"
+                      placeholder="e.g. Bhopal, Madhya Pradesh"
+                      value={formData.location}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">Inquiry Reason</label>
+                    <input
+                      type="text"
+                      name="reason"
+                      placeholder="e.g. Data Analytics Consulting"
+                      value={formData.reason}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -276,6 +295,7 @@ const Contact = () => {
                     value={formData.message}
                     onChange={handleChange}
                     rows={4}
+                    required
                     className="w-full px-5 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none"
                   />
                 </div>
@@ -306,13 +326,23 @@ const Contact = () => {
       {/* Global CSS for PhoneInput fix */}
       <style>{`
         .phone-input-container .react-tel-input .form-control {
-          height: auto !important;
-          line-height: 1.5 !important;
+          height: 100% !important;
+          line-height: inherit !important;
           font-size: 1rem !important;
+          min-height: 50px !important;
         }
         .phone-input-container .react-tel-input .selected-flag {
           background: transparent !important;
           padding-left: 12px;
+          display: flex;
+          align-items: center;
+          height: 100% !important;
+        }
+        .phone-input-container .react-tel-input .flag-dropdown {
+          background: transparent !important;
+          border: none !important;
+          display: flex;
+          align-items: center;
         }
       `}</style>
     </section>

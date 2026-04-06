@@ -36,6 +36,112 @@ const itemVariants = {
   },
 };
 
+const JobCard = ({ job, setSelectedJob }) => {
+  const [isDescExpanded, setIsDescExpanded] = useState(false);
+  const [isTagsExpanded, setIsTagsExpanded] = useState(false);
+  const [showDescButton, setShowDescButton] = useState(false);
+  const descRef = useRef(null);
+
+  useEffect(() => {
+    if (descRef.current) {
+      // Check if text is clamped (height of content > height of container)
+      const isClamped = descRef.current.scrollHeight > descRef.current.clientHeight;
+      if (isClamped) {
+        setShowDescButton(true);
+      }
+    }
+  }, [job.description]);
+
+  const visibleTags = isTagsExpanded ? job.tags : job.tags.slice(0, 5);
+  const hasMoreTags = job.tags.length > 5;
+
+  return (
+    <motion.div
+      className="group bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col lg:flex-row items-start justify-between gap-6"
+      variants={itemVariants}
+      layout
+    >
+      {/* Left Section: Title & Description */}
+      <div className="flex-1 lg:w-[45%] lg:flex-none lg:pr-8">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
+          {job.title}
+        </h3>
+        <div className="relative">
+          <p
+            ref={descRef}
+            className={`text-gray-600 dark:text-gray-400 text-sm sm:text-base transition-all duration-300 ${!isDescExpanded ? 'line-clamp-3' : ''
+              }`}
+          >
+            {job.description}
+          </p>
+          {showDescButton && (
+            <button
+              onClick={() => setIsDescExpanded(!isDescExpanded)}
+              className="mt-2 text-primary hover:text-indigo-600 font-medium text-sm transition-colors focus:outline-none"
+            >
+              {isDescExpanded ? 'Show Less' : 'Read More'}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Middle Section: Metadata & Tags */}
+      <div className="flex-1 w-full lg:w-auto flex flex-col gap-4">
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-5 text-sm text-gray-600 dark:text-gray-300">
+          <div className="flex items-center gap-2">
+            <HiOutlineLocationMarker className="text-primary flex-shrink-0" size={18} />
+            <span className="truncate">{job.location}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <HiOutlineBriefcase className="text-primary flex-shrink-0" size={18} />
+            <span className="truncate">{job.experience}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <HiOutlineClock className="text-primary flex-shrink-0" size={18} />
+            <span className="truncate">{job.employmentType}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <HiOutlineCalendar className="text-primary flex-shrink-0" size={18} />
+            <span className="truncate">{job.postedDate}</span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 items-center">
+          {visibleTags.map((tag, i) => (
+            <motion.span
+              layout
+              key={i}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="px-2.5 py-1 bg-primary/10 text-primary dark:bg-primary/20 text-xs font-medium rounded-md"
+            >
+              {tag}
+            </motion.span>
+          ))}
+          {hasMoreTags && (
+            <button
+              onClick={() => setIsTagsExpanded(!isTagsExpanded)}
+              className="px-2.5 py-1 text-primary hover:bg-primary/5 rounded-md text-xs font-semibold transition-colors focus:outline-none"
+            >
+              {isTagsExpanded ? 'Show Less' : `+${job.tags.length - 5} more`}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Right Section: Action Button */}
+      <div className="w-full lg:w-auto flex justify-end shrink-0 lg:self-center">
+        <button
+          onClick={() => setSelectedJob(job.title)}
+          className="w-full lg:w-auto py-2.5 px-8 bg-primary text-white font-semibold rounded-lg hover:bg-indigo-600 shadow-sm hover:shadow transition-all flex items-center justify-center whitespace-nowrap">
+          Apply Now
+          <HiOutlineArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+        </button>
+      </div>
+    </motion.div>
+  );
+};
+
 export default function Careers() {
   const [selectedJob, setSelectedJob] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -260,64 +366,7 @@ export default function Careers() {
                 {positions
                   .slice((currentPage - 1) * JOBS_PER_PAGE, currentPage * JOBS_PER_PAGE)
                   .map((job, idx) => (
-                    <motion.div
-                      key={job.id || idx}
-                      className="group bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6"
-                      variants={itemVariants}
-                    >
-                      {/* Left Section: Title & Description */}
-                      <div className="flex-1 lg:w-[45%] lg:flex-none lg:pr-8">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors">
-                          {job.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base line-clamp-2 lg:line-clamp-none">
-                          {job.description}
-                        </p>
-                      </div>
-
-                      {/* Middle Section: Metadata & Tags */}
-                      <div className="flex-1 w-full lg:w-auto flex flex-col gap-3">
-                        <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 sm:gap-5 text-sm text-gray-600 dark:text-gray-300">
-                          <div className="flex items-center gap-2">
-                            <HiOutlineLocationMarker className="text-primary flex-shrink-0" size={18} />
-                            <span className="truncate">{job.location}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <HiOutlineBriefcase className="text-primary flex-shrink-0" size={18} />
-                            <span className="truncate">{job.experience}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <HiOutlineClock className="text-primary flex-shrink-0" size={18} />
-                            <span className="truncate">{job.employmentType}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <HiOutlineCalendar className="text-primary flex-shrink-0" size={18} />
-                            <span className="truncate">{job.postedDate}</span>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-wrap gap-2">
-                          {job.tags.map((tag, i) => (
-                            <span
-                              key={i}
-                              className="px-2.5 py-1 bg-primary/10 text-primary dark:bg-primary/20 text-xs font-medium rounded-md"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Right Section: Action Button */}
-                      <div className="w-full lg:w-auto flex justify-end shrink-0">
-                        <button
-                          onClick={() => setSelectedJob(job.title)}
-                          className="w-full lg:w-auto py-2.5 px-8 bg-primary text-white font-semibold rounded-lg hover:bg-indigo-600 shadow-sm hover:shadow transition-all flex items-center justify-center whitespace-nowrap">
-                          Apply Now
-                          <HiOutlineArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                        </button>
-                      </div>
-                    </motion.div>
+                    <JobCard key={job.id || idx} job={job} setSelectedJob={setSelectedJob} />
                   ))}
 
                 {/* Pagination Controls */}
