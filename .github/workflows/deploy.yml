@@ -86,9 +86,9 @@ jobs:
           echo "$(date) ================= FRONTEND DEPLOY ================="
           cd "$FRONTEND_DIR"
 
-          echo "$(date) Ensuring Node.js 20 is installed..."
-          if ! command -v node >/dev/null 2>&1 || ! node -v | grep -qE '^v20\.'; then
-            curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+          echo "$(date) Ensuring Node.js 18 is installed..."
+          if ! command -v node >/dev/null 2>&1 || ! node -v | grep -qE '^v18\.'; then
+            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
             sudo apt-get update
             sudo apt-get install -y nodejs
           fi
@@ -112,11 +112,19 @@ jobs:
           echo "$(date) Installing frontend dependencies..."
           npm install --legacy-peer-deps --no-audit --no-fund
 
+          echo "$(date) Fixing CRA compatibility dependencies..."
+          npm install --save-dev --legacy-peer-deps \
+            @babel/plugin-proposal-private-property-in-object \
+            ajv@8 \
+            ajv-keywords@5
+
           echo "$(date) Verifying installed packages..."
           npm ls dompurify || true
           npm ls react-quill || true
           npm ls quill || true
           npm ls jest-worker || true
+          npm ls ajv || true
+          npm ls ajv-keywords || true
 
           echo "$(date) Building frontend..."
           CI=false npm run build
