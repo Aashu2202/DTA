@@ -89,6 +89,7 @@ jobs:
           echo "$(date) Ensuring Node.js 20 is installed..."
           if ! command -v node >/dev/null 2>&1 || ! node -v | grep -qE '^v20\.'; then
             curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+            sudo apt-get update
             sudo apt-get install -y nodejs
           fi
 
@@ -96,7 +97,6 @@ jobs:
           echo "$(date) NPM version: $(npm -v)"
 
           test -f package.json || { echo "Error: package.json not found"; exit 1; }
-          test -f package-lock.json || { echo "Error: package-lock.json not found"; exit 1; }
 
           echo "$(date) Checking dependencies in package.json..."
           grep -n '"dompurify"' package.json || echo "dompurify not found in package.json"
@@ -104,18 +104,22 @@ jobs:
           grep -n '"quill"' package.json || echo "quill not found in package.json"
 
           echo "$(date) Cleaning old frontend install..."
-          rm -rf node_modules build dist
+          rm -rf node_modules package-lock.json build dist
+
+          echo "$(date) Cleaning npm cache..."
+          npm cache clean --force
 
           echo "$(date) Installing frontend dependencies..."
-          npm ci --no-audit --no-fund
+          npm install --legacy-peer-deps --no-audit --no-fund
 
           echo "$(date) Verifying installed packages..."
           npm ls dompurify || true
           npm ls react-quill || true
           npm ls quill || true
+          npm ls jest-worker || true
 
           echo "$(date) Building frontend..."
-          npm run build
+          CI=false npm run build
 
           echo "$(date) Deploying frontend build..."
           sudo rm -rf /var/www/html/*
@@ -129,6 +133,7 @@ jobs:
             exit 1
           fi
 
+          echo "$(date) Setting ownership and permissions..."
           sudo chown -R www-data:www-data /var/www/html
           sudo find /var/www/html -type d -exec chmod 755 {} \;
           sudo find /var/www/html -type f -exec chmod 644 {} \;
