@@ -43,12 +43,13 @@ jobs:
         shell: bash
         run: |
           ssh \
+            -tt \
             -o StrictHostKeyChecking=no \
             -o UserKnownHostsFile=/dev/null \
             -o ConnectTimeout=20 \
             -i ~/.ssh/dta_key \
             ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-              set -e
+              set -euo pipefail
 
               export DEBIAN_FRONTEND=noninteractive
 
@@ -62,6 +63,10 @@ jobs:
               echo "Pulling latest code..."
               git fetch origin
               git reset --hard origin/main
+
+              echo "Current deployed commit:"
+              git rev-parse HEAD
+              git log --oneline -1
 
               echo "================ BACKEND DEPLOY ================="
               cd "$BACKEND_DIR"
@@ -91,15 +96,30 @@ jobs:
               echo "Node version: $(node -v)"
               echo "NPM version: $(npm -v)"
 
+              echo "Checking required frontend files..."
+              test -f package.json || { echo "Error: package.json not found in $FRONTEND_DIR"; exit 1; }
+              test -f package-lock.json || { echo "Error: package-lock.json not found in $FRONTEND_DIR"; exit 1; }
+
+              echo "Checking dependencies declared in package.json..."
+              grep -n '"dompurify"' package.json || echo "dompurify not found in package.json"
+              grep -n '"react-quill"' package.json || echo "react-quill not found in package.json"
+              grep -n '"quill"' package.json || echo "quill not found in package.json"
+
+              echo "Checking source imports..."
+              grep -R "import DOMPurify from 'dompurify'" src || true
+              grep -R 'react-quill/dist/quill.snow.css' src || true
+              grep -R "from 'react-quill'" src || true
+
               echo "Cleaning old frontend install..."
-              rm -rf node_modules
-              rm -f package-lock.json
+              rm -rf node_modules build dist
 
-              echo "Cleaning npm cache..."
-              npm cache clean --force
+              echo "Installing frontend dependencies with npm ci..."
+              npm ci
 
-              echo "Installing frontend dependencies..."
-              npm install
+              echo "Verifying installed packages..."
+              npm ls dompurify || true
+              npm ls react-quill || true
+              npm ls quill || true
 
               echo "Building frontend..."
               npm run build
@@ -115,6 +135,11 @@ jobs:
                 echo "Error: No build or dist folder found"
                 exit 1
               fi
+
+              echo "Setting ownership and permissions..."
+              sudo chown -R www-data:www-data /var/www/html
+              sudo find /var/www/html -type d -exec chmod 755 {} \;
+              sudo find /var/www/html -type f -exec chmod 644 {} \;
 
               echo "Checking nginx config..."
               sudo nginx -t
