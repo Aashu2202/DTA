@@ -129,3 +129,45 @@ button {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* Rich Text Content Styling (for content rendered from React Quill) */
+.rich-text-content ul {
+  list-style-type: disc !important;
+  margin-left: 1.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.rich-text-content ol {
+  list-style-type: decimal !important;
+  margin-left: 1.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.rich-text-content li {
+  margin-bottom: 0.25rem !important;
+  display: list-item !important;
+}
+
+.rich-text-content h1 {
+  font-size: 1.875rem !important;
+  font-weight: 700 !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+  line-height: 1.25 !important;
+}
+
+.rich-text-content h2 {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  margin-top: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.25 !important;
+}
+
+.rich-text-content p {
+  margin-bottom: 1rem !important;
+}
+
+.rich-text-content strong {
+  font-weight: 700 !important;
+}

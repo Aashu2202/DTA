@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import DOMPurify from 'dompurify';
+import 'react-quill/dist/quill.snow.css';
 import { API_BASE_URL } from '../../config';
 
 const JobForm = () => {
@@ -49,6 +52,21 @@ const JobForm = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleDescriptionChange = (content) => {
+    setFormData(prev => ({ ...prev, description: content }));
+  };
+
+  const prepareContent = (html) => {
+    // 1. Sanitize before processing
+    let clean = DOMPurify.sanitize(html);
+
+    // 2. Remove empty tags like <p><br></p>, <h1><br></h1>, etc.
+    // This regex looks for tags containing only whitespace or <br>
+    clean = clean.replace(/<(p|h[1-6]|li)>(?:\s|&nbsp;|<br\s*\/?>)*<\/\1>/gi, '');
+
+    return clean.trim();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -56,6 +74,7 @@ const JobForm = () => {
 
     const payload = {
       ...formData,
+      description: prepareContent(formData.description),
       requirements: formData.requirements.split('\n').map(r => r.trim()).filter(r => r)
     };
 
@@ -134,7 +153,28 @@ const JobForm = () => {
 
         <div>
           <label className="block text-gray-700 font-semibold mb-2">Job Description</label>
-          <textarea name="description" required rows="5" value={formData.description} onChange={handleChange} className="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Enter full job description here..."></textarea>
+          <div className="bg-white rounded-md">
+            <ReactQuill
+              theme="snow"
+              value={formData.description}
+              onChange={handleDescriptionChange}
+              modules={{
+                toolbar: [
+                  [{ 'header': [1, 2, false] }],
+                  ['bold', 'italic', 'underline'],
+                  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                  ['clean']
+                ],
+              }}
+              formats={[
+                'header',
+                'bold', 'italic', 'underline',
+                'list', 'bullet'
+              ]}
+              placeholder="Enter full job description here..."
+              className="h-64 mb-12"
+            />
+          </div>
         </div>
 
         <div>

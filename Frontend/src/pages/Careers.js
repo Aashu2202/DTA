@@ -14,6 +14,7 @@ import {
   HiChevronRight
 } from 'react-icons/hi';
 import ApplicationModal from '../components/Career/ApplicationModal';
+import DOMPurify from 'dompurify';
 import { API_BASE_URL } from '../config';
 
 const containerVariants = {
@@ -50,7 +51,32 @@ const JobCard = ({ job, setSelectedJob }) => {
         setShowDescButton(true);
       }
     }
-  }, [job.description]);
+  }, [job.description, isDescExpanded]);
+
+  const isHTML = (str) => {
+    if (!str) return false;
+    return /<[a-z][\s\S]*>/i.test(str);
+  };
+
+  const renderDescription = (description) => {
+    if (!description) return null;
+
+    if (isHTML(description)) {
+      return (
+        <div
+          className="rich-text-content text-gray-600 dark:text-gray-400 text-sm sm:text-base"
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }}
+        />
+      );
+    }
+
+    // Legacy plain text handling with preserved line breaks
+    return (
+      <div className="text-gray-600 dark:text-gray-400 text-sm sm:text-base whitespace-pre-wrap">
+        {description}
+      </div>
+    );
+  };
 
   const visibleTags = isTagsExpanded ? job.tags : job.tags.slice(0, 5);
   const hasMoreTags = job.tags.length > 5;
@@ -67,13 +93,13 @@ const JobCard = ({ job, setSelectedJob }) => {
           {job.title}
         </h3>
         <div className="relative">
-          <p
+          <div
             ref={descRef}
-            className={`text-gray-600 dark:text-gray-400 text-sm sm:text-base transition-all duration-300 ${!isDescExpanded ? 'line-clamp-3' : ''
+            className={`transition-all duration-300 overflow-hidden ${!isDescExpanded ? 'line-clamp-3' : ''
               }`}
           >
-            {job.description}
-          </p>
+            {renderDescription(job.description)}
+          </div>
           {showDescButton && (
             <button
               onClick={() => setIsDescExpanded(!isDescExpanded)}
