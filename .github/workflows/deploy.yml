@@ -13,6 +13,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: Frontend/package-lock.json
+
       - name: Setup SSH key
         run: |
           set -e
@@ -30,7 +37,6 @@ jobs:
         run: |
           set -e
           ssh \
-            -vvv \
             -o StrictHostKeyChecking=no \
             -o UserKnownHostsFile=/dev/null \
             -o ConnectTimeout=20 \
@@ -72,8 +78,22 @@ jobs:
               sudo systemctl restart dta-backend
               sudo systemctl status dta-backend --no-pager || true
 
-              echo "Building frontend..."
+              echo "Updating frontend..."
               cd ../Frontend
+
+              # Install Node.js 20 if not already available
+              if ! command -v node >/dev/null 2>&1 || ! node -v | grep -qE '^v2[0-9]\.'; then
+                echo "Installing Node.js 20..."
+                curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+                sudo apt-get install -y nodejs
+              fi
+
+              echo "Node version: $(node -v)"
+              echo "NPM version: $(npm -v)"
+
+              rm -rf node_modules
+              rm -f package-lock.json
+
               npm install
               npm run build
 
