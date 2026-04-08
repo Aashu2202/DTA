@@ -13,14 +13,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: Frontend/package-lock.json
-
       - name: Setup SSH key
+        shell: bash
         run: |
           set -e
           mkdir -p ~/.ssh
@@ -28,12 +22,14 @@ jobs:
           chmod 600 ~/.ssh/dta_key
 
       - name: Validate SSH key
+        shell: bash
         run: |
           set -e
           ssh-keygen -y -f ~/.ssh/dta_key > /dev/null
           echo "SSH key is valid"
 
       - name: Test SSH connection
+        shell: bash
         run: |
           set -e
           ssh \
@@ -44,6 +40,7 @@ jobs:
             ubuntu@${{ secrets.EC2_HOST }} "echo SSH connected successfully"
 
       - name: Deploy to EC2
+        shell: bash
         run: |
           ssh \
             -o StrictHostKeyChecking=no \
@@ -53,7 +50,11 @@ jobs:
             ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
               set -e
 
+              export DEBIAN_FRONTEND=noninteractive
+
               APP_DIR="/home/ubuntu/DTA"
+              FRONTEND_DIR="$APP_DIR/Frontend"
+              BACKEND_DIR="$APP_DIR/Backend"
 
               echo "Moving to project directory..."
               cd "$APP_DIR"
@@ -62,15 +63,15 @@ jobs:
               git fetch origin
               git reset --hard origin/main
 
-              echo "Updating backend..."
-              cd Backend
+              echo "================ BACKEND DEPLOY ================="
+              cd "$BACKEND_DIR"
 
               if [ ! -d "venv" ]; then
                 python3 -m venv venv
               fi
 
               source venv/bin/activate
-              pip install --upgrade pip
+              python -m pip install --upgrade pip
               pip install -r requirements.txt
               pip install gunicorn uvicorn
 
@@ -78,12 +79,11 @@ jobs:
               sudo systemctl restart dta-backend
               sudo systemctl status dta-backend --no-pager || true
 
-              echo "Updating frontend..."
-              cd ../Frontend
+              echo "================ FRONTEND DEPLOY ================"
+              cd "$FRONTEND_DIR"
 
-              # Install Node.js 20 if not already available
-              if ! command -v node >/dev/null 2>&1 || ! node -v | grep -qE '^v2[0-9]\.'; then
-                echo "Installing Node.js 20..."
+              echo "Ensuring Node.js 20 is installed..."
+              if ! command -v node >/dev/null 2>&1 || ! node -v | grep -qE '^v20\.'; then
                 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
                 sudo apt-get install -y nodejs
               fi
@@ -91,10 +91,17 @@ jobs:
               echo "Node version: $(node -v)"
               echo "NPM version: $(npm -v)"
 
+              echo "Cleaning old frontend install..."
               rm -rf node_modules
               rm -f package-lock.json
 
+              echo "Cleaning npm cache..."
+              npm cache clean --force
+
+              echo "Installing frontend dependencies..."
               npm install
+
+              echo "Building frontend..."
               npm run build
 
               echo "Deploying frontend build..."
@@ -105,7 +112,7 @@ jobs:
               elif [ -d "dist" ]; then
                 sudo cp -r dist/. /var/www/html/
               else
-                echo "No build or dist folder found"
+                echo "Error: No build or dist folder found"
                 exit 1
               fi
 
