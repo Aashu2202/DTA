@@ -17,25 +17,44 @@ const Login = () => {
     setError(null);
 
     try {
+      console.log('[DEBUG] Login attempt started');
+      console.log('[DEBUG] API_BASE_URL:', API_BASE_URL);
+      console.log('[DEBUG] Endpoint:', `${API_BASE_URL}/api/v1/auth/login`);
+      console.log('[DEBUG] Email provided:', !!email);
+      console.log('[DEBUG] Password provided:', !!password);
+
+      const params = new URLSearchParams({
+        username: email,
+        password: password,
+      });
+
+      console.log('[DEBUG] Request Content-Type: application/x-www-form-urlencoded');
+
       const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: new URLSearchParams({
-          username: email,
-          password: password,
-        }),
+        body: params,
       });
 
+      console.log('[DEBUG] Response Status:', response.status);
+      console.log('[DEBUG] Response OK:', response.ok);
+
       if (!response.ok) {
-        throw new Error('Invalid credentials');
+        const errorData = await response.json().catch(() => ({}));
+        console.log('[DEBUG] Error Response Body:', errorData);
+        // Handle both FastAPI 'detail' and other possible 'message' fields
+        const errorMessage = errorData.detail || errorData.message || 'Invalid credentials';
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
+      console.log('[DEBUG] Login successful, token received');
       localStorage.setItem('adminToken', data.access_token);
       navigate('/admin/jobs');
     } catch (err) {
+      console.error('[DEBUG] Login Error:', err.message);
       setError(err.message);
     } finally {
       setLoading(false);

@@ -4,6 +4,7 @@ from app.schemas.user import UserCreate, UserResponse, Token
 from app.repositories import user_repo
 from app.core.security import verify_password, create_access_token
 from app.db.mongodb import get_database
+from app.utils.logger import logger
 from typing import Any
 
 router = APIRouter()
@@ -34,16 +35,32 @@ async def login(
     """
     OAuth2 compatible token login, get an access token for future requests
     """
+    logger.info(f"[DIAGNOSTIC] Login attempt for username: {form_data.username}")
+    
     user = await user_repo.user.get_by_email(db, email=form_data.username)
-    if not user or not verify_password(form_data.password, user.hashed_password):
+    
+    if not user:
+        logger.warning(f"[DIAGNOSTIC] User not found in DB: {form_data.username}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect email or password",
         )
-    elif not user.is_active:
+    
+    logger.info(f"[DIAGNOSTIC] User found in DB. Verifying password for {form_data.username}")
+    if not verify_password(form_data.password, user.hashed_password):
+        logger.warning(f"[DIAGNOSTIC] Password verification failed for {form_data.username}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect email or password",
+        )
+        
+    if not user.is_active:
+        logger.warning(f"[DIAGNOSTIC] User is inactive: {form_data.username}")
         raise HTTPException(status_code=400, detail="Inactive user")
     
+    logger.info(f"[DIAGNOSTIC] Login successful for user: {form_data.username}")
+    
     return {
-        "access_token": create_access_token(user.id),
+        "access_token": create_access_token(subject=str(user.id)),
         "token_type": "bearer",
     }
